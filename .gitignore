@@ -1,7 +1,2 @@
 myenv
 .idea
-Backend/__pycache__
-Backend/config/__pycache__
-Backend/models/__pycache__
-Backend/routes/__pycache__
-Backend/Schemas/__pycache__
