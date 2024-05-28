@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- ======= CSS link ======== -->
+    <link rel="stylesheet" href="..\CSS\Login.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
+    <title>login and signup page</title>
+</head>
+<body>
+    <div class="container" id="container">
+        <div class="form-container sign-in-container">
+            <form id="login-form">
+                <h1>SCMXPertLite</h1>
+                <h2>Sign in now</h2>                
+                <div class="form-group">
+                    <label for="email">Email Address*</label>
+                    <input type="email" name="emailAddress" id="email" class="email" placeholder="Enter your email" required="">
+                    <span class="error"></span>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password*</label>
+                    <div class="password-box">
+                        <input type="password" name="password" id="password" class="pass" placeholder="Enter your Password" required="">
+                        <i class="bi bi-eye-slash" id="togglePassword"></i>
+                        <span class="error"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" name="remember" id="rememberMe" class="checkbox_rem">
+                    <label>Remember Me</label>
+                </div>
+                <div class="form-group">
+                    <div class="g-recaptcha" data-sitekey="6LfiSekpAAAAAPpnpJVAaeSdwxW4wxBjRxFOSkxw"></div>
+                </div>
+                <br/>
+                <button type="submit">Sign In</button>
+                <span><a href="#">Forgot your password?</a></span>
+            </form>
+        </div>
+        <div class="overlay-container">
+            <div class="overlay">
+                <!-- <div class="overlay-panel overlay-left">
+                    <h1>Welcome Back!</h1>
+                    <p>Please login with your personal info.</p>
+                    <button class="ghost" id="signIn">SIGN IN</button>
+                </div> -->
+                <div class="overlay-panel overlay-right">                    
+                    <h1>Create your account</h1>
+                    <p>Enter your personal details and start journey with us</p>
+                    <button class="ghost" id="signUp">SIGN UP</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+ </div>
+ <!-- ==========  Js files ========== -->
+    <script src="..\JS\Login.Js"></script> 
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</body>
+</html> 
