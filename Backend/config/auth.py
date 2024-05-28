@@ -60,37 +60,53 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]) -> Use
         payload = jwt.decode(token, SECRET_KEY, algorithms = [ALGORITHM])
         print(payload)
         email: str = payload["sub"]
+        role: str = payload["role"]
         print(email)
-        if email is None:
+        if email is None or role is None:
             #return {"message": "No such user"}
             raise credentials_exception
-        token_data = TokenData(email=email)
+        token_data = TokenData(email=email, role=role)
         print(token_data)
         user = get_user(email= token_data.email)
         if user is None:
             raise credentials_exception
             #return {"message": "No such user"}
-        return user
+        return {"email": token_data.email, "role": token_data.role, "id": str(user["_id"])}
     except InvalidTokenError:
         #print("Invalid token")
         raise credentials_exception
     
-    
-
-async def get_current_active_user(current_user: Annotated[User,Depends(get_current_user)],):
-    #print("in currrent user block")
-    if current_user: 
-        return current_user
-    else:
-        raise HTTPException(status_code = 400, detail = "Invalid User")
-
-async def get_current_active_user_with_role(role: str, current_user: UserinDB = Depends(get_current_user)):
-    if role not in current_user.role:
+async def get_current_admin(current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "admin":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail = "Not enough permissions",
+            detail="You do not have permission to access this resource",
         )
-    return current_user
+    return current_user    
+
+async def get_current_user_role(current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "user":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You do not have permission to access this resource",
+        )
+    return current_user 
+
+
+# async def get_current_active_user(current_user: Annotated[User,Depends(get_current_user)],):
+#     #print("in currrent user block")
+#     if current_user: 
+#         return current_user
+#     else:
+#         raise HTTPException(status_code = 400, detail = "Invalid User")
+
+# async def get_current_active_user_with_role(role: str, current_user: UserinDB = Depends(get_current_user)):
+#     if role not in current_user.role:
+#         raise HTTPException(
+#             status_code=status.HTTP_403_FORBIDDEN,
+#             detail = "Not enough permissions",
+#         )
+#     return current_user
 
 def fetch_device_details(device_id: int):
     device_detail = device.find_one({"Device_id": device_id})

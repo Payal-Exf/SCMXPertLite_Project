@@ -8,10 +8,11 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     email: Optional[str] = None
+    role: Optional[str] = None
 
 class User(BaseModel):
     fullname: str
-    role: Optional[str]
+    role: str
     email: EmailStr
 
 class UserinDB(User):

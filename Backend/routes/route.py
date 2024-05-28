@@ -7,7 +7,7 @@ from fastapi.templating import Jinja2Templates
 from pydantic import EmailStr
 import requests
 from models.models import Shipment, Token, User, UserinDB
-from config.auth import ACCESS_TOKEN_EXPIRE_MINUTES,ACCESS_TOKEN_EXPIRE_DAYS_REMEMBER_ME, create_access_token, get_current_active_user, get_current_active_user_with_role, get_password_hash, user, shipment, device, get_user, authenticate_user, fetch_device_details
+from config.auth import ACCESS_TOKEN_EXPIRE_MINUTES,ACCESS_TOKEN_EXPIRE_DAYS_REMEMBER_ME, create_access_token, get_current_admin, get_current_user_role, get_password_hash, user, shipment, device, get_user, authenticate_user, fetch_device_details
 from Schemas.schemas import list_devices, list_serial, individual_serial, list_shipments, single_device, single_shipment
 from bson import ObjectId
 
@@ -29,7 +29,7 @@ async def login_for_access_token(
         )
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": user["email"]}, expires_delta=access_token_expires
+        data={"sub": user["email"],"role": user["role"]}, expires_delta=access_token_expires
     )
     response = JSONResponse(content={"message": "Login Successful"})
     response.set_cookie(
@@ -41,7 +41,12 @@ async def login_for_access_token(
         secure=True,
         samesite='lax'
     )
-    return {"access_token": access_token, "token_type": "bearer"}
+    
+    #return {"access_token": access_token, "token_type": "bearer"}
+    return JSONResponse(
+            status_code=status.HTTP_200_OK, 
+            content={"access_token": access_token, 
+                    "token_type": "bearer"})
 
 
 
@@ -107,7 +112,7 @@ async def login(request: Request, email: str = Form(...), password: str = Form(.
         else:
             access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
         access_token = create_access_token(
-        data={"sub": valid_user["email"]}, expires_delta=access_token_expires
+        data={"sub": valid_user["email"], "role": valid_user["role"]}, expires_delta=access_token_expires
          )
         # return {"message": "Login Successful",
         #         "details": individual_serial(valid_user),
@@ -119,22 +124,27 @@ async def login(request: Request, email: str = Form(...), password: str = Form(.
     else:
         return JSONResponse(status_code=status.HTTP_401_UNAUTHORIZED, content={"message": "Invalid email or password"})
 
-@router.get("/users/me/", response_model=User)
-async def read_users_me(
-    current_user: Annotated[User, Depends(get_current_active_user)],
-):
-    return current_user
+# @router.get("/users/me/", response_model=User)
+# async def read_users_me(
+#     current_user: Annotated[User, Depends(get_current_active_user)],
+# ):
+#     return current_user
 
-@router.get("/users/me/items/")
-async def read_own_items(
-    current_user: Annotated[User, Depends(get_current_active_user)],
-):
-    return [{"item_id": "Foo", "owner": current_user["email"]}]
+# @router.get("/users/me/items/")
+# async def read_own_items(
+#     current_user: Annotated[User, Depends(get_current_active_user)],
+# ):
+#     return [{"item_id": "Foo", "owner": current_user["email"]}]
 
 
-@router.get("/admin", response_model=User)
-async def read_admin_data(current_user: Annotated[User, Depends(lambda: get_current_active_user_with_role("admin"))]):
-    return current_user
+@router.get("/admin")
+async def read_admin_data(current_admin: dict = Depends(get_current_admin)):
+    return {"message": "This is a protected admin endpoint", "user": current_admin}
+
+@router.get("/user")
+async def read_user_data(current_user: dict = Depends(get_current_user_role)):
+    return {"message": "This is a protected user endpoint", "user": current_user}
+
 
 @router.get("/Shipment/")
 async def shipment_details():
