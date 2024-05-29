@@ -19,28 +19,40 @@ togglePassword.addEventListener('click', function (e) {
     this.classList.toggle('bi-eye')
 });
 
-document.getElementById("login-form").addEventListener("submit", async function(event) {
-    event.preventDefault();
+document.addEventListener('DOMContentLoaded', () => {
+    const loginForm = document.getElementById("login-form");
+    const errorMessage = document.getElementById('error-message');
+    
+    loginForm.addEventListener("submit", async function(event) {
+        event.preventDefault();
 
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    const gRecaptchaResponse = grecaptcha.getResponse();
-    const rememberMe = document.getElementById("rememberMe").checked;
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const gRecaptchaResponse = grecaptcha.getResponse();
+        const rememberMe = document.getElementById("rememberMe").checked;
 
-    try {
-        const token = await login(email, password, gRecaptchaResponse, rememberMe);
-        console.log("JWT token:", token);
+        try {
+            const response = await login(email, password, gRecaptchaResponse, rememberMe);
+            console.log("JWT token:", response);
+            if (response.message === "Login Successful"){
+                alert("Login Successful")
+                window.location.href = "http://localhost:8080/Pages/Index.html";
+            }else{
+                errorMessage.textContent = await response.message;
+                throw new Error(response.message || 'Login Failed')
+            }
 
-        // Here, you can redirect the user to a protected page or perform other actions
-    } catch (error) {
-        console.error("Login failed:", error.message);
-        alert("Login failed: " + error.message);
-    }
+            // Here, you can redirect the user to a protected page or perform other actions
+        } catch (error){
+            errorMessage.textContent = error.message
+        }
+    })
 });
 
 // Function to perform login and obtain JWT token
 async function login(email, password, gRecaptchaResponse, rememberMe) {
-    const response = await fetch('http://127.0.0.1:8000/login', {
+    
+        const response = await fetch('http://127.0.0.1:8000/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
@@ -50,19 +62,18 @@ async function login(email, password, gRecaptchaResponse, rememberMe) {
             password: password,
             g_recaptcha_response: gRecaptchaResponse,
             remember_me: rememberMe  // Pass rememberMe value to the server
-        })
+        }),
+        credentials: 'include'
     });
     if (!response.ok) {
         const errorMessage = await response.text();
         throw new Error(errorMessage);
     }
     const responseData = await response.json();
-    return responseData.access_token;
+    
+    return responseData;     
 }
 
-// signInButton.addEventListener('click', () => {
-//       container.classList.remove('right-panel-active');
-// });
 
 // // Form validation
 // document.getElementsByTagName('input').blur(function () {
