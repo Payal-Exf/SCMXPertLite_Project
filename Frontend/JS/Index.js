@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const menuItems = document.querySelectorAll('.menu-item');
     const contentBody = document.getElementById('content-body');
-    const userNameElement = document.getElementById('user-name');
+    const userNameElement = document.getElementById('username');
     const token = getCookie('access_token');
 
     menuItems.forEach(item => {
