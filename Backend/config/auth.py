@@ -61,17 +61,18 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]) -> Use
         print(payload)
         email: str = payload["sub"]
         role: str = payload["role"]
+        fullname: str = payload["fullname"]
         print(email)
         if email is None or role is None:
             #return {"message": "No such user"}
             raise credentials_exception
-        token_data = TokenData(email=email, role=role)
+        token_data = TokenData(email=email, role=role, fullname=fullname)
         print(token_data)
         user = get_user(email= token_data.email)
         if user is None:
             raise credentials_exception
             #return {"message": "No such user"}
-        return {"email": token_data.email, "role": token_data.role, "id": str(user["_id"])}
+        return {"email": token_data.email, "role": token_data.role,"fullname": token_data.fullname, "id": str(user["_id"])}
     except InvalidTokenError:
         #print("Invalid token")
         raise credentials_exception
