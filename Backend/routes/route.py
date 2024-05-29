@@ -29,9 +29,11 @@ async def login_for_access_token(
         )
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": user["email"],"role": user["role"]}, expires_delta=access_token_expires
+        data={"sub": user["email"],"role": user["role"], "fullname": user["fullname"]}, expires_delta=access_token_expires
     )
-    response = JSONResponse(content={"message": "Login Successful"})
+    response = JSONResponse(status_code=status.HTTP_200_OK, 
+                            content={"access_token": access_token, 
+                                    "token_type": "bearer"})
     response.set_cookie(
         key="access_token",
         value=access_token,
@@ -39,14 +41,12 @@ async def login_for_access_token(
         max_age=1800,
         expires=1800,
         secure=True,
-        samesite='lax'
+        samesite='lax',
+        path='/'
     )
     
     #return {"access_token": access_token, "token_type": "bearer"}
-    return JSONResponse(
-            status_code=status.HTTP_200_OK, 
-            content={"access_token": access_token, 
-                    "token_type": "bearer"})
+    return response
 
 
 
@@ -73,8 +73,8 @@ async def add_user(new_user: UserinDB):
                 {"$set": {"hashed_password": hashed_password}}
             )
             #user.insert_one(dict(new_user))
-            return {"message": "User Created Successfully.", 
-                    "new_user": individual_serial(get_user(new_user.email))}
+            return JSONResponse(content = {"message": "User Created Successfully.", 
+                    "new_user": individual_serial(get_user(new_user.email))})
     except Exception as e:
         raise HTTPException(status_code=500, detail= str(e))
     
@@ -85,7 +85,7 @@ async def add_user(new_user: UserinDB):
 
 # Login endpoint with CAPTCHA verification and JWT token generation
 @router.post("/login") 
-async def login(request: Request, email: str = Form(...), password: str = Form(...), 
+async def login(response: Response, email: str = Form(...), password: str = Form(...), 
                 g_recaptcha_response: str = Form(...), remember_me: bool = Form(False)):
     secret_key = '6LfiSekpAAAAAI_Jxhr-zKfkYvL-b8Y0K4jfdEK-'
 
@@ -93,11 +93,11 @@ async def login(request: Request, email: str = Form(...), password: str = Form(.
         'secret': secret_key,
         'response': g_recaptcha_response
     }
-    response = requests.post('https://www.google.com/recaptcha/api/siteverify', data=payload)
-    result = response.json()
+    responses = requests.post('https://www.google.com/recaptcha/api/siteverify', data=payload)
+    result = responses.json()
     
     if not result['success']:
-        return JSONResponse(status_code=status.HTTP_401_UNAUTHORIZED, content={"message": "reCAPTCHA verification failed"})
+        return JSONResponse(status_code=status.HTTP_401_UNAUTHORIZED, content="reCAPTCHA Verification Failed")
 
     # Authenticate user
     valid_user = authenticate_user(email, password)
@@ -112,17 +112,31 @@ async def login(request: Request, email: str = Form(...), password: str = Form(.
         else:
             access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
         access_token = create_access_token(
-        data={"sub": valid_user["email"], "role": valid_user["role"]}, expires_delta=access_token_expires
+        data={"sub": valid_user["email"], "role": valid_user["role"], "fullname": valid_user["fullname"]}, expires_delta=access_token_expires
          )
         # return {"message": "Login Successful",
         #         "details": individual_serial(valid_user),
         #         "token": Token(access_token=access_token, token_type="bearer")}
-        return JSONResponse(
+        
+        response = JSONResponse(
             status_code=status.HTTP_200_OK, 
-            content={"access_token": access_token, 
-                    "token_type": "bearer"})                
+            content={"message": "Login Successful",
+                    "access_token": access_token, 
+                    "token_type": "bearer"})   
+        
+        response.set_cookie(
+            key="access_token",
+            value=access_token,
+            httponly=True,
+            secure=True,
+            samesite="None",
+            path="/"
+        )
+
+        return response           
     else:
-        return JSONResponse(status_code=status.HTTP_401_UNAUTHORIZED, content={"message": "Invalid email or password"})
+
+        return JSONResponse(status_code=status.HTTP_401_UNAUTHORIZED, content= "Invalid Email or Password")
 
 # @router.get("/users/me/", response_model=User)
 # async def read_users_me(
