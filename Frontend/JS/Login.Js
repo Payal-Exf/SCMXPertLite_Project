@@ -28,24 +28,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
-        const gRecaptchaResponse = grecaptcha.getResponse();
         const rememberMe = document.getElementById("rememberMe").checked;
-
-        try {
-            const response = await login(email, password, gRecaptchaResponse, rememberMe);
-            console.log("JWT token:", response);
-            if (response.message === "Login Successful"){
-                alert("Login Successful")
-                window.location.href = "http://localhost:8080/Pages/Index.html";
-            }else{
-                errorMessage.textContent = await response.message;
-                throw new Error(response.message || 'Login Failed')
+        const gRecaptchaResponse = grecaptcha.getResponse();
+        const grecaptchaError = document.getElementById("captcha-error");
+        if (gRecaptchaResponse.length !== 0)
+        {
+            grecaptchaError.textContent = '';
+            try {
+                const response = await login(email, password, gRecaptchaResponse, rememberMe);
+                console.log("JWT token:", response);
+                if (response.message === "Login Successful"){
+                    alert("Login Successful")
+                    window.location.href = "http://localhost:8080/Pages/Index.html";
+                }else{
+                    errorMessage.textContent = await response.message;
+                    throw new Error(response.message || 'Login Failed')
+                }
+    
+                // Here, you can redirect the user to a protected page or perform other actions
+            } catch (error){
+                errorMessage.textContent = error.message
             }
-
-            // Here, you can redirect the user to a protected page or perform other actions
-        } catch (error){
-            errorMessage.textContent = error.message
         }
+        else{
+            grecaptchaError.textContent = 'Please verify you are not a robot.'
+        }
+
     })
 });
 
