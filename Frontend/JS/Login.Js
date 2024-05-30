@@ -6,7 +6,7 @@ const password = document.querySelector('#password');
 
 signUpButton.addEventListener('click', () => {
       //container.classList.add('right-panel-active');
-      window.location.href = "http://localhost:8080/Pages/signUp.html";
+      window.location.href = "http://127.0.0.1:8080/Pages/signUp.html";
 });
 
 //toggle password
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log("JWT token:", response);
                 if (response.message === "Login Successful"){
                     alert("Login Successful")
-                    window.location.href = "http://localhost:8080/Pages/Index.html";
+                    window.location.href = "http://127.0.0.1:8080/Pages/LandingPage.html";
                 }else{
                     errorMessage.textContent = await response.message;
                     throw new Error(response.message || 'Login Failed')
