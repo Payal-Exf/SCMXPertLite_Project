@@ -55,9 +55,9 @@ span {
 
 .error {
 	color: #f10707;
-    font-family: "Montserrat", sans-serif;
-	font-weight: bolder;
-    font-size: 14px;
+    font-family: Arial, sans-serif;
+	font-weight: bold;
+    font-size: 11px;
     position: absolute;
     bottom: -20px;
     right: 0;

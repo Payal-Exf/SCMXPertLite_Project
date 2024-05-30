@@ -34,28 +34,28 @@
                 <div class="form-group">
                     <label for="name">Full Name*</label>
                     <input type="text" name="username" id="name" class="name" >
-                    <span class="error"></span>
+                    <div class="error" id="name_error"></div>
                 </div>
                 <div class="form-group">
                     <label for="email">Email Adderss*</label>
-                    <input type="email" name="emailAdress" id="emailid" class="email" required="">
-                    <span class="error"></span>
+                    <input type="email" name="emailAdress" id="emailid" class="email">
+                    <div class="error" id="emailid_error"></div>
                 </div>
                 <div class="form-group">
                     <label for="password">Password*</label>
                     <div class="password-box">
-                        <input required="" type="password" name="password" id="id_password" class="pass" aria-hidden="true">
+                        <input type="password" name="password" id="id_password" class="pass" aria-hidden="true">
                         <i class="bi bi-eye-slash" id="togglePassword"></i>
-                        <span class="error"></span>
+                        <div class="error" id="id_password_error"></div>
                     </div>                    
                 </div>
 
                 <div class="form-group">
                     <label for="passwordCon">Confirm Password*</label>
                     <div class="password-box">
-                        <input required="" type="password" name="passwordCon" id="passwordCon" class="passConfirm">
+                        <input type="password" name="passwordCon" id="passwordCon" class="passConfirm">
                         <i class="bi bi-eye-slash" id="toggleConfPassword"></i>
-                        <span class="error"></span>
+                        <div class="error" id="passwordCon_error"></div>
                     </div>
                 </div>
                 <div class="form-group">
