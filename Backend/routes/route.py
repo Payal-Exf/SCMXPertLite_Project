@@ -127,9 +127,11 @@ async def login(response: Response, email: str = Form(...), password: str = Form
         response.set_cookie(
             key="access_token",
             value=access_token,
-            httponly=True,
+            httponly=False,
+            max_age=1800,
+            expires=1800,
             secure=True,
-            samesite="None",
+            samesite='none',
             path="/"
         )
 
@@ -167,9 +169,12 @@ async def shipment_details():
 
 @router.post("/create_shipment/")
 async def create_shipment(new_shipment: Shipment):
-    shipment.insert_one(new_shipment.model_dump())
-    return {"message": "Shipment Created Successfully.", 
-                "new_user": new_shipment.model_dump()}
+    try:
+        shipment.insert_one(new_shipment.model_dump())
+        return JSONResponse(status_code=200, content={"success": "True"}) 
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"success": False, "error": str(e)})
+    
     
 @router.get("/Device_Details/")
 async def all_device_details():
