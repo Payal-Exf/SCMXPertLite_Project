@@ -1,5 +1,5 @@
 from datetime import timedelta
-from typing import Annotated
+from typing import Annotated, List
 from fastapi import APIRouter, Depends, Form, HTTPException, Request, Response, status
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.security import OAuth2PasswordRequestForm
@@ -8,7 +8,7 @@ from pydantic import EmailStr
 import requests
 from models.models import Shipment, Token, User, UserinDB
 from config.auth import ACCESS_TOKEN_EXPIRE_MINUTES,ACCESS_TOKEN_EXPIRE_DAYS_REMEMBER_ME, create_access_token, get_current_admin, get_current_user_role, get_password_hash, user, shipment, device, get_user, authenticate_user, fetch_device_details
-from Schemas.schemas import list_devices, list_serial, individual_serial, list_shipments, single_device, single_shipment
+from Schemas.schemas import list_deviceId, list_devices, list_serial, individual_serial, list_shipments, single_device, single_shipment
 from bson import ObjectId
 
 
@@ -181,15 +181,18 @@ async def all_device_details():
     all_devices_details = list_devices(device.find())
     return all_devices_details
 
+@router.get("/getDeviceIds", response_model=List[str])
+async def get_device_ids():
+    device_ids = list_deviceId(device.find())
+    return device_ids
+
 @router.get("/Device_Details/{Device_id}")
-async def single_device_detail(Device_id:int):
+async def single_device_detail(Device_id:str):
     device_exist = fetch_device_details(Device_id)
     if device_exist:
-        return {"message": "Shipment Created Successfully.", 
-                "new_user": single_device(device_exist)}
+        return [single_device(device_exist)]
     else: 
-        return {"message": "Please enter correct Device ID"}
-    
+        return JSONResponse(status_code=status.HTTP_401_UNAUTHORIZED, content= "Please enter correct Device ID")
 
 
 

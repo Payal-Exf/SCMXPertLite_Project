@@ -109,6 +109,6 @@ async def get_current_user_role(current_user: dict = Depends(get_current_user)):
 #         )
 #     return current_user
 
-def fetch_device_details(device_id: int):
+def fetch_device_details(device_id: str):
     device_detail = device.find_one({"Device_id": device_id})
     return device_detail

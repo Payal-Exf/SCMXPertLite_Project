@@ -38,9 +38,9 @@ def list_shipments(Shipments) -> list:
 # Device details Ftech - Serialization
 def single_device(Device) -> dict:
     return {
-        "Device_id": int(Device["Device_id"]),
+        "Device_id": str(Device["Device_id"]),
         "Battery_level": float(Device["Battery_level"]),
-        "First_senor_temp": str(Device["First_senor_temp"]),
+        "First_sensor_temp": str(Device["First_sensor_temp"]),
         "Route_from": str(Device["Route_from"]),
         "Route_to": str(Device["Route_to"]),
         "Timestamp": str(Device["Timestamp"])
@@ -48,4 +48,7 @@ def single_device(Device) -> dict:
 
 def list_devices(Devices) -> list:
     return[single_device(device) for device in Devices]
+
+def list_deviceId(Devices) -> list:
+    return[single_device(device)["Device_id"] for device in Devices]
 
