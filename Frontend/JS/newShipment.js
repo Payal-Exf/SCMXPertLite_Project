@@ -1,3 +1,9 @@
+const fields = [
+    'shipment_No', 'container_No', 'route_details', 'goods_type',
+    'Device', 'Exp_delivery_date', 'PO_No', 'Delivery_no',
+    'NDC_no', 'Batch_ID', 'Serial_no', 'Shipment_descr'
+];
+
 document.getElementById('shipment-form').addEventListener('submit', function(event) {
     event.preventDefault();
 
@@ -7,12 +13,6 @@ document.getElementById('shipment-form').addEventListener('submit', function(eve
 
     // Validate fields
     let isValid = true;
-
-    const fields = [
-        'shipment_No', 'container_No', 'route_details', 'goods_type',
-        'Device', 'Exp_delivery_date', 'PO_No', 'Delivery_no',
-        'NDC_no', 'Batch_ID', 'Serial_no', 'Shipment_descr'
-    ];
 
     fields.forEach(field => {
         const input = document.getElementById(field);
@@ -70,17 +70,18 @@ const userNameElement = document.getElementById('username');
 const token = getCookie('access_token');
      //function to display user's Name    
      function displayUserName(){
-        if (token) {
+        if (token) 
+        {
             const payload = parseJwt(token);
             console.log("fullname " + payload.fullname)
-        if (payload.fullname){
-            userNameElement.textContent = `Hi ${payload.fullname}, Welcome to SCMXPertLite`;
+            if (payload.fullname){
+                userNameElement.textContent = `Hi ${payload.fullname}, Welcome to SCMXPertLite`;
+            }else{
+                userNameElement.textContent = 'Hi User, Welcome To SCMXPertLite';
+            }
         }else{
-            userNameElement.textContent = 'Hi User, Welcome To SCMXPertLite';
-        }
-        }else{
-            userNameElement.textContent = 'Hi User, Welcome To SCMXPertLite'
-            //window.location.href = 'http://127.0.0.1:8080/Pages/Login.html';
+            alert("Token Expired, Please Relogin.")
+            window.location.href = 'http://127.0.0.1:8080/Pages/Login.html';
         }
     } 
 
@@ -117,6 +118,17 @@ const token = getCookie('access_token');
             return null;
         }
     }
+
+    document.getElementById('clear-form').addEventListener('click', ()=> {
+        //reset the form when clear form button is clicked
+        form = document.getElementById('shipment-form');
+        form.reset();
+        fields.forEach(field => {
+            const input = document.getElementById(field);
+            const errorElement = document.getElementById(`${field}_error`);
+            errorElement.textContent = '';
+        });
+    });
 
     document.getElementById('logout').addEventListener('click', () => {
         // Clear the JWT Cookie
