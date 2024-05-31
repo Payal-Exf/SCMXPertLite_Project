@@ -8,15 +8,13 @@
     <title>Shipment Dashboard</title>
 </head>
 <body>
-    <div class="sidebar">
+    <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <div class="user-img">
+            <div class="company-logo">
                 <img src="../static/exf_logo.jpg">
             </div>
-        
             <!-- <p class="title">Exafluence</p> -->
-            <p class="name">Exafluence</p>
-            
+            <button id="sidebarToggle" class="sidebar-toggle"><i class="fas fa-bars"></i></button>
         </div>
         <ul class="sidebar-menu">
             <li><a href="dashboard.html" class="menu-item" id="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
@@ -29,7 +27,7 @@
             <button id="logout" class="menu-item"><i class="fas fa-sign-out-alt"></i> Logout</button>
         </div>
     </div>
-    <div class="content">
+    <div class="content" id="content">
         <div class="content-header">
             <h1 id="username">Welcome to SCMXPertLite</h1>        
         </div>
@@ -39,5 +37,6 @@
     </div>
 
     <script src="../JS/LandingPage.js"></script>
+    <script src="../JS/sidebar.js"></script>
 </body>
 </html>
