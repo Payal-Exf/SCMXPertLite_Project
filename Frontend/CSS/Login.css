@@ -48,14 +48,9 @@ span {
 }
 
 .error {
-    color: #f10707;
-    font-family: "Montserrat", sans-serif;
-	font-weight: bolder;
-    font-size: 14px;
-    position: absolute;
-    bottom: -20px;
-    right: 0;
-    display: contents;
+    color: red;
+    font-size: 0.9em;
+    margin-top: 5px;
 }
 
 a {
@@ -164,7 +159,7 @@ label .bi {
 	overflow: hidden;
 	width: 768px;
 	max-width: 100%;
-	min-height: 480px;
+	min-height: 520px;
 }
 
 .form-container {

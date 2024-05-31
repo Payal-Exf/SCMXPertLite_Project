@@ -38,30 +38,15 @@ span {
 	font-size: 12px;
 }
 
-/* .error {
-    color: #f95959;
-    font-family: "Montserrat", sans-serif;
-    font-size: 12px;
-    position: absolute;
-    bottom: -20px;
-    right: 0;
-    display: none;
-} */
-
 .role{
 	font-family: "Montserrat", sans-serif;
     font-size: 12px;
 }
 
 .error {
-	color: #f10707;
-    font-family: Arial, sans-serif;
-	font-weight: bold;
-    font-size: 11px;
-    position: absolute;
-    bottom: -20px;
-    right: 0;
-    display: contents;
+    color: red;
+    font-size: 0.7em;
+    margin-top: 1px;
 }
 
 a {
@@ -169,7 +154,7 @@ label .bi {
 	overflow: hidden;
 	width: 768px;
 	max-width: 100%;
-	min-height: 520px;
+	min-height: 550px;
 }
 
 .form-container {

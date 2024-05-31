@@ -34,8 +34,10 @@ form {
 
 .form-group {
     flex: 1;
-    margin-right: 10px;
+    margin-right: 40px;
 }
+
+
 
 .form-group:last-child {
     margin-right: 0;
@@ -60,16 +62,18 @@ textarea {
 
 button {
     padding: 10px;
-    background-color: #4CAF50;
+    background-color: #09f4aeb6;
     border: none;
-    color: white;
+    color: black;
     cursor: pointer;
     border-radius: 4px;
     margin-top: 20px;
+    text-align: center !important;
+    border-style: outset;
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #92ebae;
 }
 
 .error {
