@@ -7,16 +7,21 @@
     min-width: 400px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
-
+/* #4987cf */
 .styled-table thead tr {
-    background-color: #009879;
+    background-color: #4987cf;
     color: #ffffff;
     text-align: left;
 }
 
-.styled-table th,
+.styled-table th {
+    padding: 12px 15px;
+
+}
+
 .styled-table td {
     padding: 12px 15px;
+    background-color: aliceblue;
 }
 
 .styled-table tbody tr {
@@ -28,39 +33,62 @@
 }
 
 .styled-table tbody tr:last-of-type {
-    border-bottom: 2px solid #009879;
+    border-bottom: 2px solid #4987cf;
 }
 
 .styled-table tbody tr.active-row {
     font-weight: bold;
-    color: #009879;
+    color: #4987cf;
 }
 
 .search-box {
+    position: relative;
     display: flex;
     gap: 10px;
     margin-bottom: 20px;
 }
 
-.search-box input, .search-box select, .search-box button {
+.search-box input {
     padding: 10px;
     font-size: 1em;
+    width: 200px;
 }
 
-.card-container {
-    margin: 50px 0;
+.search-box button{
+    font-size: 1em;
+    padding: 10px 15px;
+    display: inline-flex;
+    background-color:#4987cf;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
 }
 
-
-.card-container,
-.card-container * {
-    box-sizing: border-box;
+.dropdown {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    background: rgb(232, 211, 239);
+    border: 1px solid #ccc;
+    width: auto;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+    z-index: 100;
+    border-radius: 5px;
 }
 
-.card-container {
-    margin-left: auto;
-    margin-right: auto;
-    width: 1000px;
+.dropdown.show {
+    display: block;
+}
+
+.dropdown-item {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background: #eee;
 }
 
 .error {
@@ -68,3 +96,4 @@
     font-size: 0.9em;
     margin-top: 5px;
 }
+

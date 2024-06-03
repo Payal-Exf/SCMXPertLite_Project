@@ -1,87 +1,48 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const userNameElement = document.getElementById('username');
-    const token = getCookie('access_token');
     const deviceSearch = document.getElementById('Search_Device');
-    const deviceDropdown = document.getElementById('deviceDropdown');
+    const dropdown = document.getElementById('dropdown');
     const searchButton = document.getElementById('searchButton');
     const deviceDetails = document.getElementById('deviceDetails');
 
-
-    //function to display user's Name    
-        function displayUserName(){
-        if (token) {
-            const payload = parseJwt(token);
-            console.log("fullname " + payload.fullname)
-        if (payload.fullname){
-            userNameElement.textContent = `Hi ${payload.fullname}, Welcome to SCMXPertLite`;
-        }else{
-            userNameElement.textContent = 'Hi User, Welcome To SCMXPertLite';
-        }
-        }else{
-            userNameElement.textContent = 'Hi User, Welcome To SCMXPertLite'
-            //window.location.href = 'http://127.0.0.1:8080/Pages/Login.html';
-        }
-    } 
-
-    //Function to parse JWT Token
-    function parseJwt(token) {
-        try {
-            const base64Url = token.split('.')[1];
-            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-            }).join(''));
-            return JSON.parse(jsonPayload);
-        } catch (error) {
-            console.error('Error parsing JWT:', error);
-            return null;
-        }
-    }
-
-    //Function to get Cookie by name
-    function getCookie(name){
-        try{
-            let CookieArr = document.cookie.split(";");
-            for (let i = 0; i < CookieArr.length; i++) {
-                let CookiePair = CookieArr[i].split("=");
-                if (name === CookiePair[0].trim()) {                   
-                    return decodeURIComponent(CookiePair[1]);
-                }
-            }
-            console.log('Cookie Not found: ', name);
-            return null;
-
-        }catch(error){
-            console.error('Error retrieving Cookie:', error);
-            return null;
-        }
-    }
-
-    document.getElementById('logout').addEventListener('click', () => {
-        // Clear the JWT Cookie
-        document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        // Redirect to login page
-        window.location.href = 'http://127.0.0.1:8080/Pages/Login.html';
-    });
-
     // Fetch device IDs and populate dropdown
-    fetch('http://localhost:8000/getDeviceIds')  // Adjust the API endpoint as needed
+    fetch('http://localhost:8000/getDeviceIds')  
         .then(response => response.json())
         .then(data => {
-            data.forEach(device => {
-                const option = document.createElement('option');
-                option.value = device;
-                option.textContent = device;
-                deviceDropdown.appendChild(option);
-            });
+            if(Array.isArray(data)){
+                data.forEach(device => {
+                    
+                    const div = document.createElement('div');
+                    div.classList.add('dropdown-item');
+                    div.textContent = device;
+                    div.addEventListener('click',() => {
+                        deviceSearch.value = device;
+                        dropdown.classList.remove('show');
+                    });
+                    dropdown.appendChild(div)
+                });
+            }else{
+                console.error('API response is not an array:', data);
+            }
         })
         .catch(error => console.error('Error fetching device IDs:', error));
+
+    // Show dropdown on search input click
+    deviceSearch.addEventListener('click', () => {
+        dropdown.classList.add('show');
+    });
+
+    // Hide dropdown if clicked outside
+    document.addEventListener('click', (event) => {
+        if (!event.target.closest('.search-box')) {
+            dropdown.classList.remove('show');
+        }
+    });
 
     // Fetch and display device details based on search button click
     searchButton.addEventListener('click', () => {
         const fields = ['Search_Device'];
-        var deviceId = deviceDropdown.value;
-        deviceSearch.textContent = deviceDropdown.value;
+        var deviceId = deviceSearch.value;
+        //deviceSearch.textContent = deviceDropdown.value;
         const errorElements = document.querySelectorAll('.error');
         errorElements.forEach(element => element.textContent = '');
 
@@ -101,7 +62,12 @@ document.addEventListener('DOMContentLoaded', () => {
             fetch(`http://localhost:8000/Device_Details/${deviceId}`)  // Adjust the API endpoint as needed
                 .then(response => response.json())
                 .then(data => {
-                    displayDeviceDetails(data);
+                    if(Array.isArray(data)){
+                        displayDeviceDetails(data);
+                    }else{
+                        console.error('API response is not an array:', data);
+                        deviceDetails.innerHTML = '<p>No data available</p>';
+                    }
                 })
                 .catch(error => console.error('Error fetching device details:', error));
         }
@@ -138,7 +104,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </table>
         `;
     }
-    displayUserName();
 });
 
  

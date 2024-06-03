@@ -1,11 +1,8 @@
 const signUpButton = document.getElementById('signUp');
-//const signInButton = document.getElementById('signIn');
-//const container = document.getElementById('container');
 const togglePassword = document.querySelector('#togglePassword');
 const password = document.querySelector('#password');
 
 signUpButton.addEventListener('click', () => {
-      //container.classList.add('right-panel-active');
       window.location.href = "http://127.0.0.1:8080/Pages/signUp.html";
 });
 
@@ -38,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const response = await login(email, password, gRecaptchaResponse, rememberMe);
                 console.log("JWT token:", response);
                 if (response.message === "Login Successful"){
-                    alert("Login Successful")
+                    //alert("Login Successful")
                     window.location.href = "http://127.0.0.1:8080/Pages/LandingPage.html";
                 }else{
                     errorMessage.textContent = await response.message;

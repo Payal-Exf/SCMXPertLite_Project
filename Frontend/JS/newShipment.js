@@ -40,11 +40,32 @@ document.getElementById('shipment-form').addEventListener('submit', function(eve
             Shipment_descr: document.getElementById('Shipment_descr').value,
         };
 
+        const token = getCookie('access_token');
+
+        function getCookie(name){
+            try{
+                let CookieArr = document.cookie.split(";");
+                for (let i = 0; i < CookieArr.length; i++) {
+                    let CookiePair = CookieArr[i].split("=");
+                    if (name === CookiePair[0].trim()) {                   
+                        return decodeURIComponent(CookiePair[1]);
+                    }
+                }
+                console.log('Cookie Not found: ', name);
+                return null;
+    
+            }catch(error){
+                console.error('Error retrieving Cookie:', error);
+                return null;
+            }
+        }
+
         // Send form data to the backend
         fetch('http://127.0.0.1:8000/create_shipment/', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(formData)
         })
@@ -65,77 +86,3 @@ document.getElementById('shipment-form').addEventListener('submit', function(eve
     }
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-const userNameElement = document.getElementById('username');
-const token = getCookie('access_token');
-     //function to display user's Name    
-     function displayUserName(){
-        if (token) 
-        {
-            const payload = parseJwt(token);
-            console.log("fullname " + payload.fullname)
-            if (payload.fullname){
-                userNameElement.textContent = `Hi ${payload.fullname}, Welcome to SCMXPertLite`;
-            }else{
-                userNameElement.textContent = 'Hi User, Welcome To SCMXPertLite';
-            }
-        }else{
-            alert("Token Expired, Please Relogin.")
-            window.location.href = 'http://127.0.0.1:8080/Pages/Login.html';
-        }
-    } 
-
-    //Function to parse JWT Token
-    function parseJwt(token) {
-        try {
-            const base64Url = token.split('.')[1];
-            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-            }).join(''));
-            return JSON.parse(jsonPayload);
-        } catch (error) {
-            console.error('Error parsing JWT:', error);
-            return null;
-        }
-    }
-
-    //Function to get Cookie by name
-    function getCookie(name){
-        try{
-            let CookieArr = document.cookie.split(";");
-            for (let i = 0; i < CookieArr.length; i++) {
-                let CookiePair = CookieArr[i].split("=");
-                if (name === CookiePair[0].trim()) {                   
-                    return decodeURIComponent(CookiePair[1]);
-                }
-            }
-            console.log('Cookie Not found: ', name);
-            return null;
-
-        }catch(error){
-            console.error('Error retrieving Cookie:', error);
-            return null;
-        }
-    }
-
-    document.getElementById('clear-form').addEventListener('click', ()=> {
-        //reset the form when clear form button is clicked
-        form = document.getElementById('shipment-form');
-        form.reset();
-        fields.forEach(field => {
-            const input = document.getElementById(field);
-            const errorElement = document.getElementById(`${field}_error`);
-            errorElement.textContent = '';
-        });
-    });
-
-    document.getElementById('logout').addEventListener('click', () => {
-        // Clear the JWT Cookie
-        document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        // Redirect to login page
-        window.location.href = 'http://127.0.0.1:8080/Pages/Login.html';
-    });
-
-    displayUserName();
-});

@@ -34,18 +34,25 @@
         <div class="content-header">
             <h1 id="username">Welcome to SCMXPertLite</h1>        
         </div>
-        <div class="content-body card-container" id="content-body">
-            <div class="search-box">
-                <input type="text" id="Search_Device" placeholder="Search for Device ID...">
-                <select id="deviceDropdown"></select>
-                <button id="searchButton">Search</button>
-                <div class="error" id="Search_Device_error"></div>
+        <div class="content-body" id="content-body">
+            <div class="card-container">
+                <div>
+                    <h2>PLease select a Device Id to see the Data Stream</h2>
+                </div>
+                <div class="search-box">
+                    <input type="text" id="Search_Device" placeholder="Search for Device ID...">
+                    <!-- <select id="deviceDropdown"></select> -->
+                    <div class="dropdown" id="dropdown"></div>
+                    <button id="searchButton">Search</button>
+                    <div class="error" id="Search_Device_error"></div>
+                </div>
+                <div class="device-details" id="deviceDetails"></div>
             </div>
-            <div class="device-details" id="deviceDetails"></div>
         </div>
     </div>
 
     <script src="../JS/sidebar.js"></script>
     <script src="../JS/deviceData.js"></script>
+    <script src="../JS/user.js"></script>
 </body>
 </html>

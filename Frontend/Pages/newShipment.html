@@ -35,95 +35,98 @@
             <h1 id="username">Welcome to SCMXPertLite</h1>        
         </div>
         <div class="content-body" id="content-body">
-            <div class="form-container">
-                <h2>Create Shipment</h2>
-                <form id="shipment-form">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="shipment_No">Shipment No:</label>
-                            <input type="text" id="shipment_No" name="shipment_No" >
-                            <div class="error" id="shipment_No_error"></div>
+            <div class="card-container">
+                <div class="form-container">
+                    <h2>Create Shipment</h2>
+                    <form id="shipment-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="shipment_No">Shipment No:</label>
+                                <input type="text" id="shipment_No" name="shipment_No" >
+                                <div class="error" id="shipment_No_error"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="container_No">Container No:</label>
+                                <input type="text" id="container_No" name="container_No" >
+                                <div class="error" id="container_No_error"></div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="container_No">Container No:</label>
-                            <input type="text" id="container_No" name="container_No" >
-                            <div class="error" id="container_No_error"></div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="route_details">Route Details:</label>
+                                <input type="text" id="route_details" name="route_details" >
+                                <div class="error" id="route_details_error"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="goods_type">Goods Type:</label>
+                                <input type="text" id="goods_type" name="goods_type" >
+                                <div class="error" id="goods_type_error"></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="route_details">Route Details:</label>
-                            <input type="text" id="route_details" name="route_details" >
-                            <div class="error" id="route_details_error"></div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="Device">Device:</label>
+                                <input type="text" id="Device" name="Device" >
+                                <div class="error" id="Device_error"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="Exp_delivery_date">Expected Delivery Date:</label>
+                                <input type="datetime-local" id="Exp_delivery_date" name="Exp_delivery_date" >
+                                <div class="error" id="Exp_delivery_date_error"></div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="goods_type">Goods Type:</label>
-                            <input type="text" id="goods_type" name="goods_type" >
-                            <div class="error" id="goods_type_error"></div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="PO_No">PO No:</label>
+                                <input type="text" id="PO_No" name="PO_No" >
+                                <div class="error" id="PO_No_error"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="Delivery_no">Delivery No:</label>
+                                <input type="number" id="Delivery_no" name="Delivery_no" >
+                                <div class="error" id="Delivery_no_error"></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="Device">Device:</label>
-                            <input type="text" id="Device" name="Device" >
-                            <div class="error" id="Device_error"></div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="NDC_no">NDC No:</label>
+                                <input type="text" id="NDC_no" name="NDC_no" >
+                                <div class="error" id="NDC_no_error"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="Batch_ID">Batch ID:</label>
+                                <input type="text" id="Batch_ID" name="Batch_ID" >
+                                <div class="error" id="Batch_ID_error"></div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="Exp_delivery_date">Expected Delivery Date:</label>
-                            <input type="datetime-local" id="Exp_delivery_date" name="Exp_delivery_date" >
-                            <div class="error" id="Exp_delivery_date_error"></div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="Serial_no">Serial No:</label>
+                                <input type="text" id="Serial_no" name="Serial_no" >
+                                <div class="error" id="Serial_no_error"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="Shipment_descr">Shipment Description:</label>
+                                <textarea id="Shipment_descr" name="Shipment_descr" rows="4"></textarea>
+                                <div class="error" id="Shipment_descr_error"></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="PO_No">PO No:</label>
-                            <input type="text" id="PO_No" name="PO_No" >
-                            <div class="error" id="PO_No_error"></div>
+                        <div class="form-row">
+                            <div class="sidebar-footer">
+                                <button type="submit" class="submitbtn">Submit</button>
+                            </div>
+                            <div class="sidebar-footer">
+                                <button id="clear-form" onclick="resetform()">Clear Form</button>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="Delivery_no">Delivery No:</label>
-                            <input type="number" id="Delivery_no" name="Delivery_no" >
-                            <div class="error" id="Delivery_no_error"></div>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="NDC_no">NDC No:</label>
-                            <input type="text" id="NDC_no" name="NDC_no" >
-                            <div class="error" id="NDC_no_error"></div>
-                        </div>
-                        <div class="form-group">
-                            <label for="Batch_ID">Batch ID:</label>
-                            <input type="text" id="Batch_ID" name="Batch_ID" >
-                            <div class="error" id="Batch_ID_error"></div>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="Serial_no">Serial No:</label>
-                            <input type="text" id="Serial_no" name="Serial_no" >
-                            <div class="error" id="Serial_no_error"></div>
-                        </div>
-                        <div class="form-group">
-                            <label for="Shipment_descr">Shipment Description:</label>
-                            <textarea id="Shipment_descr" name="Shipment_descr" rows="4"></textarea>
-                            <div class="error" id="Shipment_descr_error"></div>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="sidebar-footer">
-                            <button type="submit" class="submitbtn">Submit</button>
-                        </div>
-                        <div class="sidebar-footer">
-                            <button id="clear-form" onclick="resetform()">Clear Form</button>
-                        </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         
         </div>
     </div>
         <script src="../JS/newShipment.js"></script>
         <script src="../JS/sidebar.js"></script>
+        <script src="../JS/user.js"></script>
 </body>
 </html>
