@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../CSS/myAccount.css">
+  <link rel="stylesheet" href="../CSS/LandingPage.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <title>Document</title>
+</head>
+
+<body>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="company-logo">
+                <img src="../static/exf_logo.jpg">
+            </div>
+            <!-- <p class="title">Exafluence</p> -->
+            <button id="sidebarToggle" class="sidebar-toggle"><i class="fas fa-bars"></i></button>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="LandingPage.html" class="menu-item" id="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="myAccount.html" id="myAccount"><i class="fas fa-user"></i> My Account</a></li>
+            <li><a href="myShipment.html" id="myShipment"><i class="fas fa-box"></i> My Shipment</a></li>
+            <li><a href="newShipment.html" id="CreateShipment"><i class="fas fa-plus-square"></i> New Shipment</a></li>
+            <li><a href="deviceData.html" id="devicedata"><i class="fas fa-database"></i> Device Data</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <button id="logout" class="menu-item"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
+    </div>
+    <div class="content" id="content">
+        <div class="content-header">
+            <h1 id="username">Welcome to SCMXPertLite</h1>        
+        </div>
+        <div class="content-body" id="content-body">
+                <div class="account-container">
+                    <h2>My Account</h2>
+                    <div class="form-group">
+                        <label for="fullname">Full Name:</label>
+                        <input type="text" id="fullname" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="role">Role:</label>
+                        <input type="role" id="role" readonly>
+                    </div>
+                    <button class="edit-button" onclick="editProfile()">Edit Profile</button>
+                </div>
+        </div>
+    </div>
+    <script src="../JS/myAccount.js"></script>
+    <script src="../JS/sidebar.js"></script>
+    <script src="../js/user.js"></script>
+</body>
+</html>
