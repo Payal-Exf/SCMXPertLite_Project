@@ -32,6 +32,8 @@ class Shipment(BaseModel):
     Batch_ID: str
     Serial_no: str
     Shipment_descr: str
+    Created_by: Optional[str] = None
+
 
 class Device(BaseModel):
     Device_id: str

@@ -7,7 +7,7 @@ from fastapi.templating import Jinja2Templates
 from pydantic import EmailStr
 import requests
 from models.models import Shipment, Token, User, UserinDB
-from config.auth import ACCESS_TOKEN_EXPIRE_MINUTES,ACCESS_TOKEN_EXPIRE_DAYS_REMEMBER_ME, create_access_token, get_current_admin, get_current_user_role, get_password_hash, user, shipment, device, get_user, authenticate_user, fetch_device_details
+from config.auth import ACCESS_TOKEN_EXPIRE_MINUTES,ACCESS_TOKEN_EXPIRE_DAYS_REMEMBER_ME, create_access_token, get_current_admin, get_current_user, get_current_user_role, get_password_hash, user, shipment, device, get_user, authenticate_user, fetch_device_details
 from Schemas.schemas import list_deviceId, list_devices, list_serial, individual_serial, list_shipments, single_device, single_shipment
 from bson import ObjectId
 
@@ -140,11 +140,16 @@ async def login(response: Response, email: str = Form(...), password: str = Form
 
         return JSONResponse(status_code=status.HTTP_401_UNAUTHORIZED, content= "Invalid Email or Password")
 
-# @router.get("/users/me/", response_model=User)
-# async def read_users_me(
-#     current_user: Annotated[User, Depends(get_current_active_user)],
-# ):
-#     return current_user
+@router.get("/users/me/", response_model=User)
+async def read_users_me(
+    current_user: Annotated[User, Depends(get_current_user)],
+):
+    user_details = {
+        "fullname": current_user["fullname"],
+        "email": current_user["email"],
+        "role": current_user["role"]
+    }
+    return user_details
 
 # @router.get("/users/me/items/")
 # async def read_own_items(
@@ -168,9 +173,13 @@ async def shipment_details():
     return all_shipments
 
 @router.post("/create_shipment/")
-async def create_shipment(new_shipment: Shipment):
+async def create_shipment(new_shipment: Shipment, current_user: dict = Depends(get_current_user)):
     try:
-        shipment.insert_one(new_shipment.model_dump())
+        print("Inside route")
+        shipment_dict = new_shipment.model_dump()    
+        shipment_dict['Created_by'] = current_user["email"]
+        print(shipment_dict['Created_by'])
+        shipment.insert_one(shipment_dict)
         return JSONResponse(status_code=200, content={"success": "True"}) 
     except Exception as e:
         return JSONResponse(status_code=500, content={"success": False, "error": str(e)})
@@ -194,8 +203,10 @@ async def single_device_detail(Device_id:str):
     else: 
         return JSONResponse(status_code=status.HTTP_401_UNAUTHORIZED, content= "Please enter correct Device ID")
 
-
-
+@router.get("/my_Shipments")
+async def read_user_shipments(current_user: dict = Depends(get_current_user)):
+    shipment_details = list_shipments(shipment.find({"Created_by": current_user["email"]}))
+    return shipment_details
 
 
 

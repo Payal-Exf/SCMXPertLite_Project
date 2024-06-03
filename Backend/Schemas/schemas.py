@@ -30,6 +30,7 @@ def single_shipment(Shipment) -> dict:
         "Batch_ID": str(Shipment["Batch_ID"]),
         "Serial_no": str(Shipment["Serial_no"]),
         "Shipment_descr": str(Shipment["Shipment_descr"]),
+        "Created_by": str(Shipment["Created_by"]),
     }
 
 def list_shipments(Shipments) -> list:
