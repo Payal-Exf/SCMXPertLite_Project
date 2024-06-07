@@ -40,23 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch and display device details based on search button click
     searchButton.addEventListener('click', () => {
-        //const fields = ['Search_Device'];
         var deviceId = deviceSearch.value;
-        //deviceSearch.textContent = deviceDropdown.value;
-        //const errorElements = document.querySelectorAll('.error');
-        //errorElements.forEach(element => element.textContent = '');
-
-        // Validate fields
-        // let isValid = true;
-
-        // fields.forEach(field => {
-        //     const input = document.getElementById(field);
-        //     const errorElement = document.getElementById(`${field}_error`);
-        //     if (!input.value.trim()) {
-        //         isValid = false;
-        //         errorElement.textContent = `${field.replace(/_/g, ' ')} is required`;
-        //     }
-        // });
+        
         if (!deviceId.trim()){
             fetch('http://localhost:8000/Device_Details/')
             .then(response => response.json())
@@ -70,24 +55,18 @@ document.addEventListener('DOMContentLoaded', () => {
             })
         }
         else{
-            fetch(`http://localhost:8000/Device_Details/${deviceId}`)  // Adjust the API endpoint as needed
+            fetch(`http://localhost:8000/Device_Details/${deviceId}`)  
                 .then(response => response.json())
                 .then(data => {
-                    if(Array.isArray(data)){
+                    if(Array.isArray(data) && (data.length)> 0){
                         displayDeviceDetails(data);
                     }else{
-                        console.error('API response is not an array:', data);
-                        deviceDetails.innerHTML = '<p>No data available</p>';
+                        console.error('API response is not an array or is not of finite length:', data);
+                        deviceDetails.innerHTML = `<p style="color: red; font-weight: 600;">${data}</p>`;
                     }
                 })
                 .catch(error => console.error('Error fetching device details:', error));
         }
-        // if(isValid){
-            
-        // }
-        // else{
-
-        // }
     });
 
     function displayDeviceDetails(data) {

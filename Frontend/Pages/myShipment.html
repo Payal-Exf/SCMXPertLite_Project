@@ -34,13 +34,20 @@
         <div class="content-header">
             <h1 id="username">Welcome to SCMXPertLite</h1>        
         </div>
-        <div class="content-body" id="content-body">
+        <div class="content-body" id="content-body" style="display:inherit !important;">
+            <div id="adminControls" style="display: none;">
+                <label for="shipmentFilter">Show Shipments:</label>
+                <select class="select" id="shipmentFilter">
+                    <option value="myShipments">My Shipments</option>
+                    <option value="allShipments">All Shipments</option>
+                </select>
+            </div>
             <div id="shipmentDetails"></div>
         </div>
     </div>
 
+    <script src="../JS/user.js"></script>
     <script src="../JS/sidebar.js"></script>
     <script src="../JS/myShipment.js"></script>
-    <script src="../JS/user.js"></script>
 </body>
 </html>

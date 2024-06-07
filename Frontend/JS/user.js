@@ -2,12 +2,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const userNameElement = document.getElementById('username');
     const token = getCookie('access_token');
     //function to display user's Name    
-    function displayUserName(){
+    function displayUserDetails(){
         if (token) {
             const payload = parseJwt(token);
-            console.log("fullname " + payload.fullname)
+            console.log("fullname: " + payload.fullname + "," + 
+            "role: " + payload.role + "," + 
+            "email: " +  payload.sub)
             if (payload.fullname){
                 userNameElement.textContent = `Hi ${payload.fullname.toString().toUpperCase()}, Welcome to SCMXPertLite`;
+                return {"fullname": payload.fullname, "role": payload.role, "email": payload.sub}
             }else{
                 // userNameElement.textContent = 'Hi User, Welcome To SCMXPertLite';
                 alert("Token Expired, Please Relogin.")
@@ -53,5 +56,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    displayUserName();
+    displayUserDetails();
 });

@@ -39,3 +39,9 @@
     font-weight: bold;
     color: #4987cf;
 }
+
+.select{
+    margin: 10px;
+    padding: 7px;
+    border-radius: 5px;
+}
