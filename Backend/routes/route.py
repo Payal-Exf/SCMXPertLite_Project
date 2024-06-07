@@ -42,44 +42,8 @@ async def login_for_access_token(
         samesite='lax',
         path='/'
     )
-    
-    #return {"access_token": access_token, "token_type": "bearer"}
     return response
 
-
-
-@router.get("/all_users")
-async def get_all_user():
-    users = list_serial(user.find())
-    return users
-
-
-
-@router.post("/signup/")
-async def add_user(new_user: UserinDB):
-    # if '@' not in new_user.email:
-    #     return {"Email ID invalid"}
-    try:
-        user_exist = get_user(new_user.email)
-        if user_exist:
-            raise HTTPException(status_code=400, detail = "Email Already exists.")
-        else:
-            user.insert_one(new_user.model_dump())
-            hashed_password = get_password_hash(new_user.hashed_password)
-            user.update_one(
-                {"email": new_user.email},
-                {"$set": {"hashed_password": hashed_password}}
-            )
-            #user.insert_one(dict(new_user))
-            return JSONResponse(content = {"message": "User Created Successfully.", 
-                    "new_user": individual_serial(get_user(new_user.email))})
-    except Exception as e:
-        raise HTTPException(status_code=500, detail= str(e))
-    
-
-# @router.get("/", response_class=HTMLResponse)
-# async def get_form(request: Request):
-#     return templates.TemplateResponse("Login.html", {"request": request})
 
 # Login endpoint with CAPTCHA verification and JWT token generation
 @router.post("/login") 
@@ -101,21 +65,12 @@ async def login(response: Response, email: str = Form(...), password: str = Form
     valid_user = authenticate_user(email, password)
     if valid_user:
         if remember_me:
-
-        # individual_token(Token(access_token=access_token, token_type="bearer"))
-        # return {"message": "Login Successful",
-        #         "details": individual_serial(valid_user)}
-
             access_token_expires = timedelta(minutes=int(ACCESS_TOKEN_EXPIRE_DAYS_REMEMBER_ME))
         else:
             access_token_expires = timedelta(minutes=int(ACCESS_TOKEN_EXPIRE_MINUTES))
         access_token = create_access_token(
         data={"sub": valid_user["email"], "role": valid_user["role"], "fullname": valid_user["fullname"]}, expires_delta=access_token_expires
-         )
-        # return {"message": "Login Successful",
-        #         "details": individual_serial(valid_user),
-        #         "token": Token(access_token=access_token, token_type="bearer")}
-        
+         )      
         response = JSONResponse(
             status_code=status.HTTP_200_OK, 
             content={"message": "Login Successful",
@@ -132,43 +87,29 @@ async def login(response: Response, email: str = Form(...), password: str = Form
             samesite='none',
             path="/"
         )
-
         return response           
     else:
-
         return JSONResponse(status_code=status.HTTP_401_UNAUTHORIZED, content= "Invalid Email or Password")
 
-@router.get("/users/me/", response_model=User)
-async def read_users_me(
-    current_user: Annotated[User, Depends(get_current_user)],
-):
-    user_details = {
-        "fullname": current_user["fullname"],
-        "email": current_user["email"],
-        "role": current_user["role"]
-    }
-    return user_details
 
-# @router.get("/users/me/items/")
-# async def read_own_items(
-#     current_user: Annotated[User, Depends(get_current_active_user)],
-# ):
-#     return [{"item_id": "Foo", "owner": current_user["email"]}]
-
-
-@router.get("/admin")
-async def read_admin_data(current_admin: dict = Depends(get_current_admin)):
-    return {"message": "This is a protected admin endpoint", "user": current_admin}
-
-@router.get("/user")
-async def read_user_data(current_user: dict = Depends(get_current_user_role)):
-    return {"message": "This is a protected user endpoint", "user": current_user}
-
-
-@router.get("/Shipment/")
-async def shipment_details():
-    all_shipments = list_shipments(shipment.find())
-    return all_shipments
+@router.post("/signup/")
+async def add_user(new_user: UserinDB):
+    try:
+        user_exist = get_user(new_user.email)
+        if user_exist:
+            raise HTTPException(status_code=400, detail = "Email Already exists.")
+        else:
+            user.insert_one(new_user.model_dump())
+            hashed_password = get_password_hash(new_user.hashed_password)
+            user.update_one(
+                {"email": new_user.email},
+                {"$set": {"hashed_password": hashed_password}}
+            )
+            #user.insert_one(dict(new_user))
+            return JSONResponse(content = {"message": "User Created Successfully.", 
+                    "new_user": individual_serial(get_user(new_user.email))})
+    except Exception as e:
+        raise HTTPException(status_code=500, detail= str(e))
 
 @router.post("/create_shipment/")
 async def create_shipment(new_shipment: Shipment, current_user: dict = Depends(get_current_user)):
@@ -182,7 +123,14 @@ async def create_shipment(new_shipment: Shipment, current_user: dict = Depends(g
     except Exception as e:
         return JSONResponse(status_code=500, content={"success": False, "error": str(e)})
     
-    
+@router.get("/my_Shipments")
+async def read_user_shipments(current_user: dict = Depends(get_current_user)):
+    if current_user["role"] == "Admin":
+        shipment_details = list_shipments(shipment.find())
+    else:
+        shipment_details = list_shipments(shipment.find({"Created_by": current_user["email"]}))
+    return shipment_details 
+
 @router.get("/Device_Details/")
 async def all_device_details():
     all_devices_details = list_devices(device.find())
@@ -194,17 +142,18 @@ async def get_device_ids():
     return set(device_ids)
 
 @router.get("/Device_Details/{Device_id}")
-async def single_device_detail(Device_id:int):
+async def get_device_detail(Device_id:int):
     device_exist = fetch_device_details(Device_id)
     if device_exist:
-        return list_devices(device_exist)
+        list_of_device = list_devices(device_exist)
+        if(len(list_of_device)>0):
+            return list_of_device
+        else:
+            return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content= "Please enter correct Device ID")
     else: 
-        return JSONResponse(status_code=status.HTTP_401_UNAUTHORIZED, content= "Please enter correct Device ID")
+        return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content= "Please enter correct Device ID")
 
-@router.get("/my_Shipments")
-async def read_user_shipments(current_user: dict = Depends(get_current_user)):
-    shipment_details = list_shipments(shipment.find({"Created_by": current_user["email"]}))
-    return shipment_details
+
 
 
 

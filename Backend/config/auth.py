@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from typing import Annotated
 from fastapi import Depends, HTTPException, status
 import jwt
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordBearer
 from jwt.exceptions import InvalidTokenError 
 from passlib.context import CryptContext
 from models.models import TokenData, User, UserinDB
@@ -96,22 +96,6 @@ async def get_current_user_role(current_user: dict = Depends(get_current_user)):
             detail="You do not have permission to access this resource",
         )
     return current_user 
-
-
-# async def get_current_active_user(current_user: Annotated[User,Depends(get_current_user)],):
-#     #print("in currrent user block")
-#     if current_user: 
-#         return current_user
-#     else:
-#         raise HTTPException(status_code = 400, detail = "Invalid User")
-
-# async def get_current_active_user_with_role(role: str, current_user: UserinDB = Depends(get_current_user)):
-#     if role not in current_user.role:
-#         raise HTTPException(
-#             status_code=status.HTTP_403_FORBIDDEN,
-#             detail = "Not enough permissions",
-#         )
-#     return current_user
 
 def fetch_device_details(device_id: int):
     device_detail = device.find({"Device_Id": device_id})
