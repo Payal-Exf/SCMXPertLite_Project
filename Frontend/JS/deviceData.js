@@ -40,25 +40,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch and display device details based on search button click
     searchButton.addEventListener('click', () => {
-        const fields = ['Search_Device'];
+        //const fields = ['Search_Device'];
         var deviceId = deviceSearch.value;
         //deviceSearch.textContent = deviceDropdown.value;
-        const errorElements = document.querySelectorAll('.error');
-        errorElements.forEach(element => element.textContent = '');
+        //const errorElements = document.querySelectorAll('.error');
+        //errorElements.forEach(element => element.textContent = '');
 
         // Validate fields
-        let isValid = true;
+        // let isValid = true;
 
-        fields.forEach(field => {
-            const input = document.getElementById(field);
-            const errorElement = document.getElementById(`${field}_error`);
-            if (!input.value.trim()) {
-                isValid = false;
-                errorElement.textContent = `${field.replace(/_/g, ' ')} is required`;
-            }
-        });
-
-        if(isValid){
+        // fields.forEach(field => {
+        //     const input = document.getElementById(field);
+        //     const errorElement = document.getElementById(`${field}_error`);
+        //     if (!input.value.trim()) {
+        //         isValid = false;
+        //         errorElement.textContent = `${field.replace(/_/g, ' ')} is required`;
+        //     }
+        // });
+        if (!deviceId.trim()){
+            fetch('http://localhost:8000/Device_Details/')
+            .then(response => response.json())
+            .then(data => {
+                if(Array.isArray(data)){
+                    displayDeviceDetails(data);
+                }else{
+                    console.error('API response is not an array:', data);
+                    deviceDetails.innerHTML = '<p>No data available</p>';
+                }
+            })
+        }
+        else{
             fetch(`http://localhost:8000/Device_Details/${deviceId}`)  // Adjust the API endpoint as needed
                 .then(response => response.json())
                 .then(data => {
@@ -71,9 +82,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 })
                 .catch(error => console.error('Error fetching device details:', error));
         }
-        else{
+        // if(isValid){
+            
+        // }
+        // else{
 
-        }
+        // }
     });
 
     function displayDeviceDetails(data) {
@@ -92,11 +106,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 <tbody>
                     ${data.map(record => `
                         <tr>
-                            <td>${record.Device_id}</td>
-                            <td>${record.Battery_level}</td>
-                            <td>${record.First_sensor_temp}</td>
-                            <td>${record.Route_from}</td>
-                            <td>${record.Route_to}</td>
+                            <td>${record.Device_Id}</td>
+                            <td>${record.Battery_Level}</td>
+                            <td>${record.First_Sensor_temperature} &deg Celsius</td>
+                            <td>${record.Route_From}</td>
+                            <td>${record.Route_To}</td>
                             <td>${record.Timestamp}</td>
                         </tr>
                     `).join('')}
