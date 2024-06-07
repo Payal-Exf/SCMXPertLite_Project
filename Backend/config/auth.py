@@ -1,4 +1,6 @@
 from datetime import datetime, timedelta, timezone
+import os
+from dotenv import load_dotenv
 from typing import Annotated
 from fastapi import Depends, HTTPException, status
 import jwt
@@ -8,13 +10,15 @@ from passlib.context import CryptContext
 from models.models import TokenData, User, UserinDB
 from config.config_db import user, shipment, device
 
+#load environment variables from .env file
+load_dotenv(dotenv_path='../variable.env')
 
 # Password hasing using pyjwt 
 #secret key is getenerated using bash command openssl rand -hex 32
-SECRET_KEY = "b808712122d248c2a43d9caec75c9c00a05b3e75561a2a05453701c48102582f"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
-ACCESS_TOKEN_EXPIRE_DAYS_REMEMBER_ME = 7
+SECRET_KEY = os.getenv("SECRET_KEY")
+ALGORITHM = os.getenv("ALGORITHM")
+ACCESS_TOKEN_EXPIRE_MINUTES = os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")
+ACCESS_TOKEN_EXPIRE_DAYS_REMEMBER_ME = os.getenv("ACCESS_TOKEN_EXPIRE_DAYS_REMEMBER_ME")
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated = "auto")
 
@@ -109,6 +113,6 @@ async def get_current_user_role(current_user: dict = Depends(get_current_user)):
 #         )
 #     return current_user
 
-def fetch_device_details(device_id: str):
-    device_detail = device.find_one({"Device_id": device_id})
+def fetch_device_details(device_id: int):
+    device_detail = device.find({"Device_Id": device_id})
     return device_detail

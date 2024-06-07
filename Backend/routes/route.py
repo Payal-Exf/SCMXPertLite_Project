@@ -9,8 +9,6 @@ import requests
 from models.models import Shipment, Token, User, UserinDB
 from config.auth import ACCESS_TOKEN_EXPIRE_MINUTES,ACCESS_TOKEN_EXPIRE_DAYS_REMEMBER_ME, create_access_token, get_current_admin, get_current_user, get_current_user_role, get_password_hash, user, shipment, device, get_user, authenticate_user, fetch_device_details
 from Schemas.schemas import list_deviceId, list_devices, list_serial, individual_serial, list_shipments, single_device, single_shipment
-from bson import ObjectId
-
 
 router = APIRouter()
 templates = Jinja2Templates(directory="../Frontend/Pages/")
@@ -27,7 +25,7 @@ async def login_for_access_token(
             detail="Incorrect email or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token_expires = timedelta(minutes=int(ACCESS_TOKEN_EXPIRE_MINUTES))
     access_token = create_access_token(
         data={"sub": user["email"],"role": user["role"], "fullname": user["fullname"]}, expires_delta=access_token_expires
     )
@@ -108,9 +106,9 @@ async def login(response: Response, email: str = Form(...), password: str = Form
         # return {"message": "Login Successful",
         #         "details": individual_serial(valid_user)}
 
-            access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_DAYS_REMEMBER_ME)
+            access_token_expires = timedelta(minutes=int(ACCESS_TOKEN_EXPIRE_DAYS_REMEMBER_ME))
         else:
-            access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+            access_token_expires = timedelta(minutes=int(ACCESS_TOKEN_EXPIRE_MINUTES))
         access_token = create_access_token(
         data={"sub": valid_user["email"], "role": valid_user["role"], "fullname": valid_user["fullname"]}, expires_delta=access_token_expires
          )
@@ -190,16 +188,16 @@ async def all_device_details():
     all_devices_details = list_devices(device.find())
     return all_devices_details
 
-@router.get("/getDeviceIds", response_model=List[str])
+@router.get("/getDeviceIds", response_model=List[int])
 async def get_device_ids():
     device_ids = list_deviceId(device.find())
-    return device_ids
+    return set(device_ids)
 
 @router.get("/Device_Details/{Device_id}")
-async def single_device_detail(Device_id:str):
+async def single_device_detail(Device_id:int):
     device_exist = fetch_device_details(Device_id)
     if device_exist:
-        return [single_device(device_exist)]
+        return list_devices(device_exist)
     else: 
         return JSONResponse(status_code=status.HTTP_401_UNAUTHORIZED, content= "Please enter correct Device ID")
 

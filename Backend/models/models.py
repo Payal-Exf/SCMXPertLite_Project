@@ -36,11 +36,11 @@ class Shipment(BaseModel):
 
 
 class Device(BaseModel):
-    Device_id: str
-    Battery_level: float
-    First_sensor_temp: str
-    Route_from: str
-    Route_to: str
+    Device_Id: int
+    Battery_Level: float
+    First_Sensor_temperature: float
+    Route_From: str
+    Route_To: str
     Timestamp: datetime
 
 
