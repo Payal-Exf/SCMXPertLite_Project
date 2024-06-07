@@ -6,7 +6,7 @@ import json
 
 
 # Load environment variables from the .env file
-load_dotenv(dotenv_path='../variable.env')
+load_dotenv(dotenv_path='../../variable.env')
 
 # Read environment variables
 HOST =os.getenv('HOST')

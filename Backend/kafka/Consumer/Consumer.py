@@ -9,7 +9,7 @@ from pymongo import MongoClient
 from dotenv import load_dotenv
 
 # Load environment variables from the .env file
-load_dotenv(dotenv_path='../variable.env')
+load_dotenv(dotenv_path='../../variable.env')
 
 # Read environment variables
 TOPIC_NAME = os.getenv('TOPIC_NAME')
