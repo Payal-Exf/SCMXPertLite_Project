@@ -84,7 +84,7 @@ async def login(response: Response, email: str = Form(...), password: str = Form
             max_age=1800,
             expires=1800,
             secure=True,
-            samesite='none',
+            samesite='lax',
             path="/"
         )
         return response           
