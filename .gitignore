@@ -1,3 +1,5 @@
 myenv
 .idea
 __pycache__/
+data
+local_db_dump
