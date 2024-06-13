@@ -15,7 +15,7 @@ templates = Jinja2Templates(directory="../Frontend/Pages/")
 
 @router.post("/token")
 async def login_for_access_token(
-    form_data: OAuth2PasswordRequestForm= Depends(), response: Response = None):
+    form_data: OAuth2PasswordRequestForm= Depends(), response: Response = None): # type: ignore
     email = form_data.username
     password = form_data.password
     user = authenticate_user(email, password)
@@ -25,7 +25,7 @@ async def login_for_access_token(
             detail="Incorrect email or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    access_token_expires = timedelta(minutes=int(ACCESS_TOKEN_EXPIRE_MINUTES))
+    access_token_expires = timedelta(minutes=int(ACCESS_TOKEN_EXPIRE_MINUTES)) # type: ignore
     access_token = create_access_token(
         data={"sub": user["email"],"role": user["role"], "fullname": user["fullname"]}, expires_delta=access_token_expires
     )
@@ -65,9 +65,9 @@ async def login(response: Response, email: str = Form(...), password: str = Form
     valid_user = authenticate_user(email, password)
     if valid_user:
         if remember_me:
-            access_token_expires = timedelta(minutes=int(ACCESS_TOKEN_EXPIRE_DAYS_REMEMBER_ME))
+            access_token_expires = timedelta(minutes=int(ACCESS_TOKEN_EXPIRE_DAYS_REMEMBER_ME)) # type: ignore
         else:
-            access_token_expires = timedelta(minutes=int(ACCESS_TOKEN_EXPIRE_MINUTES))
+            access_token_expires = timedelta(minutes=int(ACCESS_TOKEN_EXPIRE_MINUTES)) # type: ignore
         access_token = create_access_token(
         data={"sub": valid_user["email"], "role": valid_user["role"], "fullname": valid_user["fullname"]}, expires_delta=access_token_expires
          )      

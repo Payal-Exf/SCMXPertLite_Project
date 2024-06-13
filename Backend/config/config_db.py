@@ -2,8 +2,7 @@ import os
 from pymongo.mongo_client import MongoClient
 from pymongo import errors
 
-url = os.getenv("MONGO_URL","mongodb://mongo:27017/")
-#url = "mongodb://127.0.0.1:27017/"
+url = os.getenv("MONGO_URL","mongodb://127.0.0.1:27017/")
 
 #Connecting to MongoDb
 client = MongoClient(url)

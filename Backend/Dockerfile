@@ -19,10 +19,14 @@ COPY start.sh /app/start.sh
 # Ensure the start.sh script is executable
 RUN chmod +x /app/start.sh
 
+RUN ls -l /app
 #Expose port 8000 for uvicorn
 EXPOSE 8000
 
 #Command to run the backend 
-CMD ["./start.sh"]
+# ENTRYPOINT [ "./app/start.sh" ]
+#RUN start.sh
+
+ENTRYPOINT [ "./start.sh" ] 
 
 
