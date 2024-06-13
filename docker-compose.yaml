@@ -1,4 +1,12 @@
 services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "8080:8080"
+    networks:
+      - my-app-net
+    
+
   backend:
     build: ./Backend
     ports:
@@ -10,6 +18,8 @@ services:
       - ./variable.env
     environment: 
       - MONGO_URL=mongodb://mongodb:27017/
+    networks:
+      - my-app-net
     # Restart policy to ensure if container fails it gets restarted
     restart: unless-stopped
 
@@ -21,8 +31,11 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       ALLOW_PLAINTEXT_LISTENER: "yes"
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
     depends_on:
       - zookeeper
+    networks:
+      - my-app-net
     # Restart policy to ensure if container fails it gets restarted
     restart: unless-stopped
 
@@ -32,6 +45,8 @@ services:
       - "2181:2181"
     environment:
       ALLOW_ANONYMOUS_LOGIN: "yes" 
+    networks:
+      - my-app-net
     # Restart policy to ensure if container fails it gets restarted
     restart: unless-stopped
 
@@ -39,5 +54,14 @@ services:
     image: mongo:latest
     ports:  
       - "27017:27017"
+    networks:
+      - my-app-net
+    #volume is created to persist data from the /data/db directory in the container to the ./data directory on the host.
+    volumes:
+      - ./data:/data/db
     # Restart policy to ensure if container fails it gets restarted
     restart: unless-stopped
+
+networks:
+  my-app-net:
+    driver: bridge
