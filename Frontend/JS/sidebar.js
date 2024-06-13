@@ -31,6 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // Clear the JWT Cookie
         document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         // Redirect to login page
-        window.location.href = 'http://127.0.0.1:8080/Pages/Login.html';
+        window.location.href = './Login.html';
     });
 });

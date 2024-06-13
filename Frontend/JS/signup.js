@@ -59,7 +59,7 @@ document.getElementById('signUpForm').addEventListener('submit', async function(
                 const response = await signupUser(fullname, email, password, role);
                 if (response.message === "User Created Successfully."){
                     alert("User Signed up succesfully, Please login with your details.")
-                    window.location.href = "http://127.0.0.1:8080/Pages/Login.html";
+                    window.location.href = "./Login.html";
                 }else{
                     errorMessage.textContent = response.message;
                     throw new Error(response.message || 'Sign up failed')
@@ -127,6 +127,6 @@ const container = document.getElementById('container');
 signInButton.addEventListener('click', () => {
       
        // Redirect to a new page
-        window.location.href = "http://127.0.0.1:8080/Pages/Login.html";
+        window.location.href = "./Login.html";
 });
 

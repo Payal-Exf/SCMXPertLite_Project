@@ -3,7 +3,7 @@ const togglePassword = document.querySelector('#togglePassword');
 const password = document.querySelector('#password');
 
 signUpButton.addEventListener('click', () => {
-      window.location.href = "http://127.0.0.1:8080/Pages/signUp.html";
+      window.location.href = "./signup.html";
 });
 
 //toggle password
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log("JWT token:", response);
                 if (response.message === "Login Successful"){
                     //alert("Login Successful")
-                    window.location.href = "http://127.0.0.1:8080/Pages/LandingPage.html";
+                    window.location.href = "./LandingPage.html";
                 }else{
                     errorMessage.textContent = await response.message;
                     throw new Error(response.message || 'Login Failed')

@@ -35,5 +35,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Load default content
-    loadContent('dashboard.html');
+    loadContent('./Dashboard.html');
 });

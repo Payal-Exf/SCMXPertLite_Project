@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }else{
                 // userNameElement.textContent = 'Hi User, Welcome To SCMXPertLite';
                 alert("Token Expired, Please Relogin.")
-                window.location.href = 'http://127.0.0.1:8080/Pages/Login.html';
+                window.location.href = './Login.html';
             }
         }else{
             alert("Unauthorized Access, Please Login.")
