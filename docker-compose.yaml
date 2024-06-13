@@ -1,6 +1,7 @@
 services:
   frontend:
     build: ./frontend
+    image: payalmay0903/frontend:latest
     ports:
       - "8080:8080"
     networks:
@@ -9,6 +10,7 @@ services:
 
   backend:
     build: ./Backend
+    image: payalmay0903/backend:latest
     ports:
       - "8000:8000"
     depends_on:
