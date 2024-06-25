@@ -1,5 +1,7 @@
 from datetime import timedelta
+import os
 from typing import Annotated, List
+from dotenv import load_dotenv
 from fastapi import APIRouter, Depends, Form, HTTPException, Request, Response, status
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.security import OAuth2PasswordRequestForm
@@ -10,6 +12,7 @@ from models.models import Shipment, Token, User, UserinDB
 from config.auth import ACCESS_TOKEN_EXPIRE_MINUTES,ACCESS_TOKEN_EXPIRE_DAYS_REMEMBER_ME, create_access_token, get_current_admin, get_current_user, get_current_user_role, get_password_hash, user, shipment, device, get_user, authenticate_user, fetch_device_details
 from Schemas.schemas import list_deviceId, list_devices, list_serial, individual_serial, list_shipments, single_device, single_shipment
 
+load_dotenv(dotenv_path='../variable.env')
 router = APIRouter()
 templates = Jinja2Templates(directory="../Frontend/Pages/")
 
@@ -49,7 +52,7 @@ async def login_for_access_token(
 @router.post("/login") 
 async def login(response: Response, email: str = Form(...), password: str = Form(...), 
                 g_recaptcha_response: str = Form(...), remember_me: bool = Form(False)):
-    secret_key = '6LfiSekpAAAAAI_Jxhr-zKfkYvL-b8Y0K4jfdEK-'
+    secret_key = os.getenv('CAPTCHA_SECRET_KEY')
 
     payload = {
         'secret': secret_key,
@@ -108,6 +111,25 @@ async def add_user(new_user: UserinDB):
             #user.insert_one(dict(new_user))
             return JSONResponse(content = {"message": "User Created Successfully.", 
                     "new_user": individual_serial(get_user(new_user.email))})
+    except Exception as e:
+        raise HTTPException(status_code=500, detail= str(e))
+
+@router.post("/forget_password/")
+async def update_user(response: Response, email: str = Form(...), password: str = Form(...),):
+    try:
+        user_exist = get_user(email)
+        if user_exist:
+            hashed_password = get_password_hash(password)
+            user.update_one(
+                {"email": email},
+                {"$set": {"hashed_password": hashed_password}}
+            )
+            #user.insert_one(dict(new_user))
+            return JSONResponse(content = {"message": "Password Changed Successfully.", 
+                    "updated_user": individual_serial(get_user(email))})
+        else:
+            raise HTTPException(status_code=400, detail = "No user Exists with this email.")
+            
     except Exception as e:
         raise HTTPException(status_code=500, detail= str(e))
 
