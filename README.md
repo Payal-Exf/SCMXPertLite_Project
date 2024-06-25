@@ -16,7 +16,7 @@
         "your-venv-name"\Scripts\activate
         ```
 
-**OR*
+*OR*
 
 2. **Using Python built in module:**
     
@@ -36,7 +36,7 @@ To get started with the Sample Project, follow these steps:
 
 1. **Clone the Sample Project:**
 
-   - Clone the project repository using HTTP:
+    - Clone the project repository using HTTP:
      ```bash
      git clone https://github.com/Payal-Exf/SCMXPertLite_Project.git
      ```
