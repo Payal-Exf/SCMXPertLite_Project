@@ -1,34 +1,34 @@
 # Create a virtual enviroment
 **Using third-party package**
     
-    1. Install virtualenv using: 
+1. Install virtualenv using: 
 
-    ```bash
-    pip install virtualenv
-    ```
-    2. Create virtual env using:
+```bash
+pip install virtualenv
+```
+2. Create virtual env using:
 
-    ```bash 
-    virtualenv "your-venv-name"
-    ```
-    3. Activate the virtual environment using:
+```bash 
+virtualenv "your-venv-name"
+```
+3. Activate the virtual environment using:
 
-    ```bash 
-    "your-venv-name"\Scripts\activate
-    ```
+```bash 
+"your-venv-name"\Scripts\activate
+```
 
 **Using Python built in module:**
     
-    1. Create virtual env using:
+1. Create virtual env using:
 
-    ```bash 
-    python -m venv "your-venv-name"
-    ```
-    2. Activate the virtual environment using:
+```bash 
+python -m venv "your-venv-name"
+```
+2. Activate the virtual environment using:
 
-    ```bash 
-    "your-venv-name"\Scripts\activate
-    ```
+```bash 
+"your-venv-name"\Scripts\activate
+```
 
 # Installation and Setup
 To get started with the Sample Project, follow these steps:
