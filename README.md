@@ -1,6 +1,7 @@
 # Create a virtual enviroment
 **Using third-party package**
-     1. Install virtualenv using: 
+    
+    1. Install virtualenv using: 
 
     ```bash
     pip install virtualenv
@@ -17,6 +18,7 @@
     ```
 
 **Using Python built in module:**
+    
     1. Create virtual env using:
 
     ```bash 
