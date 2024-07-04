@@ -12,13 +12,43 @@ document.addEventListener('DOMContentLoaded', () => {
                 userNameElement.textContent = `Hi ${payload.fullname.toString().toUpperCase()}, Welcome to SCMXPertLite`;
                 return {"fullname": payload.fullname, "role": payload.role, "email": payload.sub}
             }else{
-                // userNameElement.textContent = 'Hi User, Welcome To SCMXPertLite';
-                alert("Token Expired, Please Relogin.")
-                window.location.href = './Login.html';
+                
+                Swal.fire({
+                    title: 'Oops!',
+                    text: 'Token Expired, Please Relogin.',
+                    icon: 'error',
+                    confirmButtonText: 'Ok',
+                    customClass: {
+                    popup: 'swal-popup',
+                    title: 'swal-title',
+                    content: 'swal-content',
+                    confirmButton: 'swal-confirm-button'
+                    }
+                }).then((result)=>{
+                    if(result.isConfirmed){
+                        window.location.href='./Login.html'
+                    }
+                })
             }
         }else{
-            alert("Unauthorized Access, Please Login.")
+            
             window.location.href = './Login.html';
+            Swal.fire({
+                title: 'Oops!',
+                text: 'Unauthorized Access, Please Login.',
+                icon: 'error',
+                confirmButtonText: 'Ok',
+                customClass: {
+                popup: 'swal-popup',
+                title: 'swal-title',
+                content: 'swal-content',
+                confirmButton: 'swal-confirm-button'
+                }
+            }).then((result)=>{
+                if(result.isConfirmed){
+                    window.location.href='./Login.html'
+                }
+            })
         }
     } 
 

@@ -36,13 +36,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log("JWT token:", response);
                 if (response.message === "Login Successful"){
                     //alert("Login Successful")
+                    Swal.fire({
+                        title: 'Login Successful!',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
                     window.location.href = "./LandingPage.html";
                 }else{
                     errorMessage.textContent = await response.message;
-                    throw new Error(response.message || 'Login Failed')
+                    //throw new Error(response.message || 'Login Failed')
+                    Swal.fire({
+                        title: 'Oops!',
+                        text: (response.message || 'Login Failed'),
+                        icon: 'error',
+                        confirmButtonText: 'Ok',
+                        customClass: {
+                        popup: 'swal-popup',
+                        title: 'swal-title',
+                        content: 'swal-content',
+                        confirmButton: 'swal-confirm-button'
+                        }
+                    });
                 }
-    
-                // Here, you can redirect the user to a protected page or perform other actions
             } catch (error){
                 errorMessage.textContent = error.message
             }

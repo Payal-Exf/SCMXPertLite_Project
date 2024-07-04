@@ -16,13 +16,43 @@ document.addEventListener('DOMContentLoaded', () => {
                 emailElement.value = payload.sub;
                 roleElement.value = payload.role.toString().toUpperCase();
             }else{
-                // userNameElement.textContent = 'Hi User, Welcome To SCMXPertLite';
-                alert("Token Expired, Please Relogin.")
-                window.location.href = './Login.html';
+                //alert("Token Expired, Please Relogin.")
+                Swal.fire({
+                    title: 'Token Expired!!',
+                    text: 'Please Relogin.',
+                    icon: 'error',
+                    confirmButtonText: 'Ok',
+                    customClass: {
+                    popup: 'swal-popup',
+                    title: 'swal-title',
+                    content: 'swal-content',
+                    confirmButton: 'swal-confirm-button'
+                    }
+                }).then((result)=>{
+                    if(result.isConfirmed){
+                        window.location.href='./Login.html'
+                    }
+                })
             }
         }else{
-            alert("Unauthorized Access, Please Login.")
-            window.location.href = 'http://127.0.0.1:8080/Pages/Login.html';
+            //alert("Unauthorized Access, Please Login.")
+            Swal.fire({
+                title: 'Unauthorized Access!!',
+                text: 'Please Login.',
+                icon: 'error',
+                confirmButtonText: 'Ok',
+                customClass: {
+                popup: 'swal-popup',
+                title: 'swal-title',
+                content: 'swal-content',
+                confirmButton: 'swal-confirm-button'
+                }
+            }).then((result)=>{
+                if(result.isConfirmed){
+                    window.location.href='./Login.html'
+                }
+            })
+            
         }
     } 
 
@@ -65,5 +95,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function editProfile() {
     // Implement edit profile functionality
-    alert('Edit profile feature coming soon!');
+    //alert('Edit profile feature coming soon!');
+    Swal.fire({
+        title: 'Coming Soon!',
+        text: 'This feature is coming soon. Stay tuned!',
+        icon: 'info',
+        confirmButtonText: 'Ok',
+        customClass: {
+        popup: 'swal-popup',
+        title: 'swal-title',
+        content: 'swal-content',
+        confirmButton: 'swal-confirm-button'
+        }
+    });
 }

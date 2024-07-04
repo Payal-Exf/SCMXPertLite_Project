@@ -32,10 +32,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 shipmentDetails.innerHTML = '<p>No data available</p>';
             }
         })
-        .catch(error => console.error('Failed to fetch user shipments:', error));
+        .catch(error => {
+            console.error('Failed to fetch user shipments:', error)
+            Swal.fire({
+                title: 'Oops!',
+                text: ('Failed to fetch user shipments.'|| error),
+                icon: 'error',
+                confirmButtonText: 'Ok',
+                customClass: {
+                popup: 'swal-popup',
+                title: 'swal-title',
+                content: 'swal-content',
+                confirmButton: 'swal-confirm-button'
+                }
+            })
+        });
     }  
     catch (error){
         console.error('Error fetching shipment details:', error);
+        Swal.fire({
+            title: 'Oops!',
+            text: ('Error fetching shipment details.'|| error),
+            icon: 'error',
+            confirmButtonText: 'Ok',
+            customClass: {
+            popup: 'swal-popup',
+            title: 'swal-title',
+            content: 'swal-content',
+            confirmButton: 'swal-confirm-button'
+            }
+        })
     }
 
     function displayMyShipments (data, filter) {
@@ -120,13 +146,44 @@ document.addEventListener('DOMContentLoaded', () => {
             if (payload.fullname){
                 return {"fullname": payload.fullname, "role": payload.role, "email": payload.sub}
             }else{
-                // userNameElement.textContent = 'Hi User, Welcome To SCMXPertLite';
-                alert("Token Expired, Please Relogin.")
-                window.location.href = './Login.html';
+
+                // alert("Token Expired, Please Relogin.")
+
+                Swal.fire({
+                    title: 'Token Expired!!',
+                    text: 'Please Relogin.',
+                    icon: 'error',
+                    confirmButtonText: 'Ok',
+                    customClass: {
+                    popup: 'swal-popup',
+                    title: 'swal-title',
+                    content: 'swal-content',
+                    confirmButton: 'swal-confirm-button'
+                    }
+                }).then((result)=>{
+                    if(result.isConfirmed){
+                        window.location.href='./Login.html'
+                    }
+                })
             }
         }else{
-            alert("Unauthorized Access, Please Login.")
-            window.location.href = './Login.html';
+            // alert("Unauthorized Access, Please Login.")
+            Swal.fire({
+                title: 'Unauthorized Access!!',
+                text: 'Please Login.',
+                icon: 'error',
+                confirmButtonText: 'Ok',
+                customClass: {
+                popup: 'swal-popup',
+                title: 'swal-title',
+                content: 'swal-content',
+                confirmButton: 'swal-confirm-button'
+                }
+            }).then((result)=>{
+                if(result.isConfirmed){
+                    window.location.href='./Login.html'
+                }
+            })
         }
     } 
 

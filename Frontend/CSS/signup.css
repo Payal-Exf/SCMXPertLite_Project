@@ -328,3 +328,18 @@ footer a {
 .container.right-panel-active .sign-up-container {
 	transform: translateX(100%);
 }
+
+.swal-popup {
+	background-color: #fefefe;
+	border-radius: 10px;
+  }
+  .swal-title {
+	color: #333;
+  }
+  .swal-content {
+	color: #666;
+  }
+  .swal-confirm-button {
+	background-color: #3085d6;
+	color: #fff;
+  }

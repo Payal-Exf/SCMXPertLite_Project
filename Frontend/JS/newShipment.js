@@ -5,6 +5,7 @@ const fields = [
 ];
 
 document.getElementById('shipment-form').addEventListener('submit', function(event) {
+
     event.preventDefault();
 
     // Clear previous error messages
@@ -72,17 +73,59 @@ document.getElementById('shipment-form').addEventListener('submit', function(eve
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert('Shipment created successfully');
+                //alert('Shipment created successfully');
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Shipment created successfully.',
+                    icon: 'success',
+                    confirmButtonText: 'Ok',
+                    customClass: {
+                    popup: 'swal-popup',
+                    title: 'swal-title',
+                    content: 'swal-content',
+                    confirmButton: 'swal-confirm-button'
+                    }
+                })
                 // Clear form
+                
                 document.getElementById('shipment-form').reset();
             } else {
-                alert('Error creating shipment');
+                //alert('Error creating shipment');
+                Swal.fire({
+                    title: 'Oops!',
+                    text: 'Error creating shipment.',
+                    icon: 'error',
+                    confirmButtonText: 'Ok',
+                    customClass: {
+                    popup: 'swal-popup',
+                    title: 'swal-title',
+                    content: 'swal-content',
+                    confirmButton: 'swal-confirm-button'
+                    }
+                })
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('An error occurred while creating the shipment');
+            //alert('An error occurred while creating the shipment');
+            Swal.fire({
+                title: 'Oops!',
+                text: 'An error occurred while creating the shipment.',
+                icon: 'error',
+                confirmButtonText: 'Ok',
+                customClass: {
+                popup: 'swal-popup',
+                title: 'swal-title',
+                content: 'swal-content',
+                confirmButton: 'swal-confirm-button'
+                }
+            })
         });
     }
+});
+
+document.getElementById('clear-form').addEventListener('click', () => {
+
+    document.getElementById('shipment-form').reset();
 });
 

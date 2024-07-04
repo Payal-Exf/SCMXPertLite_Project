@@ -58,11 +58,38 @@ document.getElementById('signUpForm').addEventListener('submit', async function(
             if (passMatching){
                 const response = await signupUser(fullname, email, password, role);
                 if (response.message === "User Created Successfully."){
-                    alert("User Signed up succesfully, Please login with your details.")
-                    window.location.href = "./Login.html";
+                    //alert("User Signed up succesfully, Please login with your details.")
+                    Swal.fire({
+                        title: 'User Signed up succesfully!',
+                        text: 'Please login with your details.',
+                        icon: 'success',
+                        confirmButtonText: 'Ok',
+                        customClass: {
+                        popup: 'swal-popup',
+                        title: 'swal-title',
+                        content: 'swal-content',
+                        confirmButton: 'swal-confirm-button'
+                        }
+                    }).then((result)=>{
+                        if(result.isConfirmed){
+                            window.location.href='./Login.html'
+                        }
+                    })
                 }else{
                     errorMessage.textContent = response.message;
-                    throw new Error(response.message || 'Sign up failed')
+                    //throw new Error(response.message || 'Sign up failed')
+                    Swal.fire({
+                        title: 'Oops!',
+                        text: (response.message || 'Sign up failed'),
+                        icon: 'error',
+                        confirmButtonText: 'Ok',
+                        customClass: {
+                        popup: 'swal-popup',
+                        title: 'swal-title',
+                        content: 'swal-content',
+                        confirmButton: 'swal-confirm-button'
+                        }
+                    })
                 }
             }
         } catch (error){

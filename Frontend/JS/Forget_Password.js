@@ -55,15 +55,55 @@ document.getElementById('forgetPasswordForm').addEventListener('submit', async f
             if (passMatching){
                 const response = await forgetPassword(email, password);
                 if (response.message === "Password Changed Successfully."){
-                    alert("Password Changed Successfully. Please login with your new credentials.")
-                    window.location.href = "./Login.html";
+                    //alert("Password Changed Successfully. Please login with your new credentials.")
+                    Swal.fire({
+                        title: 'Password Changed Successfully',
+                        text: 'Please login with your new credentials.!',
+                        icon: 'success',
+                        confirmButtonText: 'Ok',
+                        customClass: {
+                        popup: 'swal-popup',
+                        title: 'swal-title',
+                        content: 'swal-content',
+                        confirmButton: 'swal-confirm-button'
+                        }
+                    }).then((result)=>{
+                        if(result.isConfirmed){
+                            window.location.href='./Login.html'
+                        }
+                    })
+                    //window.location.href = "./Login.html";
                 }else{
                     errorMessage.textContent = response.message;
-                    throw new Error(response.message || 'Changing Password Failed')
+                    //throw new Error(response.message || 'Changing Password Failed')
+                    Swal.fire({
+                        title: 'Oops!',
+                        text: (response.message || 'Changing Password Failed'),
+                        icon: 'error',
+                        confirmButtonText: 'Ok',
+                        customClass: {
+                        popup: 'swal-popup',
+                        title: 'swal-title',
+                        content: 'swal-content',
+                        confirmButton: 'swal-confirm-button'
+                        }
+                    });
                 }
             }
         } catch (error){
             errorMessage.textContent = error.message
+            Swal.fire({
+                title: 'Oops!',
+                text: error.message,
+                icon: 'error',
+                confirmButtonText: 'Ok',
+                customClass: {
+                popup: 'swal-popup',
+                title: 'swal-title',
+                content: 'swal-content',
+                confirmButton: 'swal-confirm-button'
+                }
+            });
         }
     }
 });
@@ -105,7 +145,7 @@ async function forgetPassword(email, password){
     });
     if (response.ok){
         const responseData = await response.json();
-
+        
         return responseData
        
     }

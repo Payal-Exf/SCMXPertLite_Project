@@ -9,8 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(data => {
             if(Array.isArray(data)){
-                data.forEach(device => {
-                    
+                data.forEach(device => {           
                     const div = document.createElement('div');
                     div.classList.add('dropdown-item');
                     div.textContent = device;
@@ -65,7 +64,21 @@ document.addEventListener('DOMContentLoaded', () => {
                         deviceDetails.innerHTML = `<p style="color: red; font-weight: 600;">${data}</p>`;
                     }
                 })
-                .catch(error => console.error('Error fetching device details:', error));
+                .catch(error => {
+                    console.error('Error fetching device details:', error)
+                    Swal.fire({
+                        title: 'Oops!',
+                        text: 'Error fetching device details!',
+                        icon: 'error',
+                        confirmButtonText: 'Ok',
+                        customClass: {
+                        popup: 'swal-popup',
+                        title: 'swal-title',
+                        content: 'swal-content',
+                        confirmButton: 'swal-confirm-button'
+                        }
+                    })
+                });
         }
     });
 
