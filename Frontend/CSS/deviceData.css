@@ -96,3 +96,23 @@
     font-size: 0.9em;
     margin-top: 5px;
 }
+
+.pagination-btn {
+    margin: 0 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    transition: background-color 0.3s;
+}
+
+.pagination-btn:hover {
+    background-color: #ddd;
+}
+
+.pagination-btn.active {
+    background-color: #4987cf;
+    color: white;
+    border: none;
+}

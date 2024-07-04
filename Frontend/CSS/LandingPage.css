@@ -120,7 +120,7 @@ body {
     transition: background 0.3s;
 }
 .submitbtn {
-    background-color: rgb(27, 237, 27) !important;
+    background-color: #0d9bb9 !important;
 }
 
 .sidebar-footer button i {

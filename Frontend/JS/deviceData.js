@@ -3,6 +3,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const dropdown = document.getElementById('dropdown');
     const searchButton = document.getElementById('searchButton');
     const deviceDetails = document.getElementById('deviceDetails');
+    const pagination = document.getElementById('pagination');
+    let currentPage = 1;
+    const rowsPerPage = 20;
+    let deviceData = [];
 
     // Fetch device IDs and populate dropdown
     fetch('http://localhost:8000/getDeviceIds')  
@@ -46,7 +50,9 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(response => response.json())
             .then(data => {
                 if(Array.isArray(data)){
-                    displayDeviceDetails(data);
+                    deviceData = data;
+                    displayDeviceDetails();
+                    setupPagination();
                 }else{
                     console.error('API response is not an array:', data);
                     deviceDetails.innerHTML = '<p>No data available</p>';
@@ -58,7 +64,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then(response => response.json())
                 .then(data => {
                     if(Array.isArray(data) && (data.length)> 0){
-                        displayDeviceDetails(data);
+                        deviceData = data;
+                        displayDeviceDetails();
+                        setupPagination();
                     }else{
                         console.error('API response is not an array or is not of finite length:', data);
                         deviceDetails.innerHTML = `<p style="color: red; font-weight: 600;">${data}</p>`;
@@ -82,7 +90,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    function displayDeviceDetails(data) {
+    function displayDeviceDetails() {
+        const start = (currentPage - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+        const paginatedData = deviceData.slice(start, end);
+
         deviceDetails.innerHTML = `
             <table class="styled-table">
                 <thead>
@@ -96,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </tr>
                 </thead>
                 <tbody>
-                    ${data.map(record => `
+                    ${paginatedData.map(record => `
                         <tr>
                             <td>${record.Device_Id}</td>
                             <td>${record.Battery_Level}</td>
@@ -110,6 +122,39 @@ document.addEventListener('DOMContentLoaded', () => {
             </table>
         `;
     }
+
+    function setupPagination() { 
+        //Total No. Pages
+        const pageCount = Math.ceil(deviceData.length/ rowsPerPage);
+        pagination.innerHTML = '';
+
+        for (let i =1; i<= pageCount; i++){
+            const btn = document.createElement('button');
+            btn.textContent = i;
+            btn.classList.add('pagination-btn');
+            btn.addEventListener('click', () => {
+                currentPage = i;
+                displayDeviceDetails();
+                updatePaginationButtons();
+            });
+            pagination.appendChild(btn);
+        }
+
+        updatePaginationButtons();
+    }
+
+    function updatePaginationButtons() {
+        const buttons = document.querySelectorAll('.pagination-btn');
+        buttons.forEach((btn, index) => {
+            if (index + 1 === currentPage) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+    }
 });
+
+
 
  
