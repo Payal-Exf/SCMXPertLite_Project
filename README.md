@@ -91,25 +91,43 @@ To work in detach mode you can also use:
 docker-compose up -d 
 ```
 
-# Viewing the storage
-You can view stored data in MonogoDb Compass which is the GUI for Mongodb.
+# View MongoDb Container data in MongoDb GUI - Compass
+You can view stored data in MongoDb Container using MonogoDb Compass which is the GUI for Mongodb.
 
 Make sure it is installed in your PC. 
 [For more info about its download & installation click this link (https://www.mongodb.com/products/tools/compass)]
 
-**To Connect to the mongodb conatiner**
+**To Connect to the mongodb container**
 
-1.  Check the IP of your machine
+1. Ensure MongoDB Container is Running
+    - Make sure your MongoDB Docker container is up and running. You can check this by running:
+
+``` bash 
+    docker ps
+```
+Look for your MongoDB container in the list and note its Container ID or name. 
+
+2. Verify Port Mapping:
+    - Ensure that the container's port 27017 is mapped to the same port on the host. You can verify this with:
+
+``` bash
+docker inspect <container_id_or_name> | grep -i "27017"
+```
+see a mapping like "HostPort": "27017" under Ports.
+
+3. Check the IP of your machine
     - Go to cmd and write the below command: 
 
-        ``` bash 
-        ipconfig
-        ```
+``` bash 
+ipconfig
+```
 
-2. Open MongoDb Compass in your loacal machine and use the below connection string
+2. Connect to MongoDB 
+    - Open MongoDb Compass in your local machine and use the below connection string:
+
 ``` bash
 mongodb://<host_ip_address>:27017
 ```
-3. Connect and you will be able to see the available Databases and collections
+3. Connect and you will be able to see the available Databases and collections.
 
  
