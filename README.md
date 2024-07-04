@@ -107,9 +107,9 @@ Make sure it is installed in your PC.
         ```
 
 2. Open MongoDb Compass in your loacal machine and use the below connection string
-        ``` bash
-        mongodb://<host_ip_address>:27017
-        ```
+``` bash
+mongodb://<host_ip_address>:27017
+```
 3. Connect and you will be able to see the available Databases and collections
 
  
