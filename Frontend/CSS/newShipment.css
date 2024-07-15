@@ -3,7 +3,7 @@ body {
     display: ruby-text;
     justify-content: inherit;
     align-items: inherit;
-    height: 100vh;
+    height: -webkit-fill-available !important;
     margin: 0;
     background-color: #f5f5f5;
 }
