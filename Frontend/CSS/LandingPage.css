@@ -107,7 +107,6 @@ body {
 }
 
 .sidebar-footer {
-    padding: 20px;
     text-align: center;
     margin: auto;
 }
@@ -115,6 +114,8 @@ body {
 .sidebar-footer button {
     padding: 10px 15px;
     display: inline-flex;
+    justify-content: space-around;
+    width: 8.7em;
     background-color: #ff4b4b;
     border: none;
     color: white;
@@ -146,7 +147,8 @@ body {
 }
 
 .content-header {
-    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
     background-color: #b9e5f0;
     border-radius: 5px;
     padding: 10px;
