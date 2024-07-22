@@ -31,10 +31,10 @@
     </div>
     <div class="content" id="content">
         <div class="content-header">
-            <h1 id="username">Welcome to SCMXPertLite</h1>        
+            <h2 id="username">Welcome to SCMXPertLite</h2>        
         </div>
         <div class="content-body" id="content-body">
-            <div class="card-container">
+            <div class="card-container" style="display:flex;align-items: flex-start;flex-direction: column;">
                 <div>
                     <h2>Please select a Device Id to see the Data Stream</h2>
                 </div>
@@ -45,7 +45,11 @@
                     <div class="error" id="Search_Device_error"></div>
                 </div>
                 <div class="device-details" id="deviceDetails"></div>
-                <div id="pagination"></div>
+                <div class="pagination-container" id="pagination-container">
+                    <button id="prevPage"><i class="fas fa-arrow-left"></i></button>
+                    <span id="pageInfo">Page 1</span>
+                    <button id="nextPage"><i class="fas fa-arrow-right"></i></button>
+                </div>
             </div>
         </div>
     </div>

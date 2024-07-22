@@ -3,7 +3,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const dropdown = document.getElementById('dropdown');
     const searchButton = document.getElementById('searchButton');
     const deviceDetails = document.getElementById('deviceDetails');
-    const pagination = document.getElementById('pagination');
+    const prevPageButton = document.getElementById('prevPage');
+    const nextPageButton = document.getElementById('nextPage');
+    const pageInfo = document.getElementById('pageInfo');
     let currentPage = 1;
     const rowsPerPage = 20;
     let deviceData = [];
@@ -121,37 +123,75 @@ document.addEventListener('DOMContentLoaded', () => {
                 </tbody>
             </table>
         `;
+        setupPagination();
     }
+
+    prevPageButton.addEventListener('click', () => {
+        if (currentPage > 1) {
+            currentPage--;
+            displayDeviceDetails();
+            updatePageInfo();
+        }
+    });
+
+    nextPageButton.addEventListener('click', () => {
+        if (currentPage < Math.ceil(deviceData.length / rowsPerPage)) {
+            currentPage++;
+            displayDeviceDetails();
+            updatePageInfo();
+        }
+    });
 
     function setupPagination() { 
         //Total No. Pages
-        const pageCount = Math.ceil(deviceData.length/ rowsPerPage);
-        pagination.innerHTML = '';
+        // const pageCount = Math.ceil(deviceData.length/ rowsPerPage);
+        // pagination.innerHTML = '';
 
-        for (let i =1; i<= pageCount; i++){
-            const btn = document.createElement('button');
-            btn.textContent = i;
-            btn.classList.add('pagination-btn');
-            btn.addEventListener('click', () => {
-                currentPage = i;
-                displayDeviceDetails();
-                updatePaginationButtons();
-            });
-            pagination.appendChild(btn);
-        }
+        // for (let i =1; i<= pageCount; i++){
+        //     const btn = document.createElement('button');
+        //     btn.textContent = i;
+        //     btn.classList.add('pagination-btn');
+        //     btn.addEventListener('click', () => {
+        //         currentPage = i;
+        //         displayDeviceDetails();
+        //         updatePaginationButtons();
+        //     });
+        //     pagination.appendChild(btn);
+        // }
 
-        updatePaginationButtons();
+        // updatePaginationButtons();
+        const pageCount = Math.ceil(deviceData.length / rowsPerPage);
+        pageInfo.textContent = `Page ${currentPage} of ${pageCount}`;
+        updatePageInfo();
+        
     }
 
-    function updatePaginationButtons() {
-        const buttons = document.querySelectorAll('.pagination-btn');
-        buttons.forEach((btn, index) => {
-            if (index + 1 === currentPage) {
-                btn.classList.add('active');
-            } else {
-                btn.classList.remove('active');
-            }
-        });
+    function updatePageInfo() {
+    //     const buttons = document.querySelectorAll('.pagination-btn');
+    //     buttons.forEach((btn, index) => {
+    //         if (index + 1 === currentPage) {
+    //             btn.classList.add('active');
+    //         } else {
+    //             btn.classList.remove('active');
+    //         }
+    //     });
+    // }
+
+    // document.addEventListener('keydown', (event) => {
+    //     const pageCount = Math.ceil(deviceData.length / rowsPerPage);
+
+    //     if (event.key === 'ArrowRight' && currentPage < pageCount) {
+    //         currentPage++;
+    //         displayDeviceDetails();
+    //         updatePaginationButtons();
+    //     } else if (event.key === 'ArrowLeft' && currentPage > 1) {
+    //         currentPage--;
+    //         displayDeviceDetails();
+    //         updatePaginationButtons();
+    //     }
+    // });
+    prevPageButton.disabled = currentPage === 1;
+    nextPageButton.disabled = currentPage === Math.ceil(deviceData.length / rowsPerPage);
     }
 });
 
