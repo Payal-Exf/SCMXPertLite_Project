@@ -14,7 +14,8 @@ origins = ['https://localhost:8000',
            'https://127.0.0.1:8080',
            'http://127.0.0.1:8000',
            'http://172.30.176.1:8080',
-           'http://13.48.42.178:8080']
+           'http://13.48.42.178:8080',
+           'http://16.171.165.89:8080']
 
 app.add_middleware(
     CORSMiddleware,
@@ -25,11 +26,6 @@ app.add_middleware(
 )
 
 app.include_router(router)
-
-# Mount static directories
-app.mount("/css", StaticFiles(directory="/app/Frontend/CSS"), name="css")
-app.mount("/js", StaticFiles(directory="/app/Frontend/JS"), name="js")
-app.mount("/static", StaticFiles(directory="/app/Frontend/static"), name="static")
 
 @app.get("/")
 async def read_root():
