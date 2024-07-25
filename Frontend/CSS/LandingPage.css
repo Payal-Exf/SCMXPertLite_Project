@@ -193,3 +193,15 @@ body {
     background-color: #3085d6;
     color: #fff;
   }
+
+  .swal2-success .swal2-success-ring{
+    top: -0.85em !important;
+  }
+
+  .swal2-success [class^=swal2-success-line][class$=tip]{
+    width: 2.5em !important;
+  }
+
+  .swal2-success [class^=swal2-success-line][class$=long]{
+    width: 4em;
+  }
