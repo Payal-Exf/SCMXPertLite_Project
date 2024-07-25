@@ -1,5 +1,5 @@
 # Use an official python runtime as a parent image
-FROM python:latest
+FROM python:3.11-slim
 
 RUN apt-get update && apt-get install -y python3 python3-pip
 # Set working directory in the container

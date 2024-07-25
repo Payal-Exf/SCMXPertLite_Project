@@ -1,5 +1,5 @@
 #Using official python runtime as a parent image
-FROM python:latest
+FROM python:3.11-slim
 
 #set the working directory in the container
 WORKDIR /app
@@ -24,9 +24,6 @@ RUN ls -l /app
 EXPOSE 8000
 
 #Command to run the backend 
-# ENTRYPOINT [ "./app/start.sh" ]
-#RUN start.sh
-
 ENTRYPOINT [ "./start.sh" ] 
 
 

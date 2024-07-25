@@ -1,8 +1,5 @@
 #!/bin/sh
 
-# Start FastAPI server
-uvicorn SCMXPertLite_Backend:app --host 0.0.0.0 --port 8000 &
-
 # Start Socket server
 python ./kafka/Socket_server.py &
 
@@ -11,6 +8,9 @@ python ./kafka/Producer.py &
 
 # Kafka Consumer
 python ./kafka/Consumer.py &
+
+# Start FastAPI server
+uvicorn SCMXPertLite_Backend:app --host 0.0.0.0 --port 8000 &
 
 # wait for all background processes to finish
 # while true;  do sleep 1000; done

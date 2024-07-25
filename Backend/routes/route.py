@@ -1,12 +1,11 @@
 from datetime import timedelta
 import os
-from typing import Annotated, List
+from typing import List
 from dotenv import load_dotenv
 from fastapi import APIRouter, Depends, Form, HTTPException, Request, Response, status
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.templating import Jinja2Templates
-from pydantic import EmailStr
 import requests
 from models.models import Shipment, Token, User, UserinDB
 from config.auth import ACCESS_TOKEN_EXPIRE_MINUTES,ACCESS_TOKEN_EXPIRE_DAYS_REMEMBER_ME, create_access_token, get_current_admin, get_current_user, get_current_user_role, get_password_hash, user, shipment, device, get_user, authenticate_user, fetch_device_details
@@ -15,6 +14,10 @@ from Schemas.schemas import list_deviceId, list_devices, list_serial, individual
 load_dotenv(dotenv_path='../variable.env')
 router = APIRouter()
 templates = Jinja2Templates(directory="../Frontend/Pages/")
+
+@router.get("/")
+async def login():
+    return FileResponse(os.path.join("Frontend", "Pages", "Login.html"))
 
 @router.post("/token")
 async def login_for_access_token(
@@ -155,7 +158,7 @@ async def read_user_shipments(current_user: dict = Depends(get_current_user)):
 
 @router.get("/Device_Details/")
 async def all_device_details():
-    all_devices_details = list_devices(device.find())
+    all_devices_details = list_devices(device.find().sort({"Timestamp": -1}))
     return all_devices_details
 
 @router.get("/getDeviceIds", response_model=List[int])
