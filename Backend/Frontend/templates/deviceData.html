@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../static/CSS/deviceData.css">
+  <link rel="stylesheet" href="../static/CSS/LandingPage.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <title>Document</title>
+</head>
+
+<body>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="company-logo">
+                <img alt="" src="../static/images/exf_logo.jpg">
+            </div>
+            <button id="sidebarToggle" class="sidebar-toggle"><i class="fas fa-bars"></i></button>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="/landingPage" class="menu-item" id="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="/myAccount" id="myAccount"><i class="fas fa-user"></i> My Account</a></li>
+            <li><a href="/myShipments" id="myShipment"><i class="fas fa-box"></i> My Shipment</a></li>
+            <li><a href="/create_shipment" id="CreateShipment"><i class="fas fa-plus-square"></i> New Shipment</a></li>
+            <li><a href="/deviceData" id="devicedata"><i class="fas fa-database"></i> Device Data</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <button id="logout" class="menu-item"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
+    </div>
+    <div class="content" id="content">
+        <div class="content-header">
+            <h2 id="username">Welcome to SCMXPertLite</h2>        
+        </div>
+        <div class="content-body" id="content-body">
+            <div class="card-container" style="display:flex;align-items: flex-start;flex-direction: column;">
+                <div>
+                    <h2>Please select a Device Id to see the Data Stream</h2>
+                </div>
+                <div class="search-box">
+                    <input type="text" id="Search_Device" placeholder="Search for Device ID...">
+                    <div class="dropdown" id="dropdown"></div>
+                    <button id="searchButton">Search</button>
+                    <div class="error" id="Search_Device_error"></div>
+                </div>
+                <div class="device-details" id="deviceDetails"></div>
+                <div class="pagination-container" id="pagination-container">
+                    <button id="prevPage"><i class="fas fa-arrow-left"></i></button>
+                    <span id="pageInfo">Page 1</span>
+                    <button id="nextPage"><i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../static/JS/sidebar.js"></script>
+    <script src="../static/JS/deviceData.js"></script>
+    <script src="../static/JS/user.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>
