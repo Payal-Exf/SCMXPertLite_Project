@@ -131,8 +131,9 @@ mongodb://<host_ip_address>:27017
 3. Connect and you will be able to see the available Databases and collections.
 
 # Deployment on an AWS EC2 instance
-1. Login into your AWS account --> go to services and select EC2.
-2. Launch a instance - this will create a new instance, you need to create a key value pair
+1. ***Login into your AWS account*** --> go to services and select EC2.
+
+2. ***Launch an instance*** - this will create a new instance, you need to create a key value pair
     - this will download a pem or ppk file which you can use to connect using ssh
     - after this your instace is up and running.
 
@@ -147,10 +148,12 @@ mongodb://<host_ip_address>:27017
 ```bash
     ssh <your Instance public IPV4 public DNS> -i <absolute path of your PEM file>
 ```
-Configure SSH config file - Open the ssh config file and check the remote connection details
-3. Connect to the SSH Host:
+*Configure SSH config file* - Open the ssh config file and check the remote connection details.
+
+3. ***Connect to the SSH Host:***
     - After adding SSH host from the list of available hosts select the desired one.
-4. Open a Remote Window:
+
+4. ***Open a Remote Window:***
     - After connect is established you can now open folders and files o this remote server.
     - Add the your project focal directly here by drag and drop from local to server.
     - After folder is copied you need to install docker and docker compose
@@ -179,7 +182,7 @@ docker-compose up -d
 ```bash
 docker-compose logs
 ```
-5. Access the application:
+5. ***Access the application:***
     - Open your browser and navigate to *localhost:8000*.
 
 
