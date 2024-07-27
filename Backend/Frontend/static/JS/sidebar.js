@@ -21,7 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Set active class based on current URL
     const currentUrl = window.location.pathname.split('/').pop();
     highlightMenu.forEach(item => {
-        if (currentUrl.includes(item.getAttribute('href'))) {
+        if (currentUrl === item.getAttribute('href').split('/').pop()) 
+        {
             item.classList.add('active');
         }
     });
