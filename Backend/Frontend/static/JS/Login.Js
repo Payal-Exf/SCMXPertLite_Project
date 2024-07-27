@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    window.location.href = "landingPage";
+                    window.location.href = "/dashboard";
                 }else{
                     errorMessage.textContent = await response.message;
                     //throw new Error(response.message || 'Login Failed')

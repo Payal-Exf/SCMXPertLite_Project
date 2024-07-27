@@ -94,8 +94,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function editProfile() {
-    // Implement edit profile functionality
-    //alert('Edit profile feature coming soon!');
     Swal.fire({
         title: 'Coming Soon!',
         text: 'This feature is coming soon. Stay tuned!',

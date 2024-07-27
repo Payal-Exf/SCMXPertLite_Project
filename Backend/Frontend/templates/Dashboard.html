@@ -1,14 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../static/CSS/Dashboard.css">
-  <title>Document</title>
-</head>
+{% block title %}Dashboard{% endblock %}
 
-<body>
+{% block content %}
+    <link rel="stylesheet" href="../static/CSS/Dashboard.css">
     <div class="card-container">
         <div class="card card-blue">
         <div class="card-innerbox">
@@ -37,5 +32,4 @@
         </div>    
     </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</body>
-</html>
+{% endblock %}

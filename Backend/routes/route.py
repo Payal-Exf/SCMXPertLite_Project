@@ -154,10 +154,6 @@ async def update_user(response: Response, email: str = Form(...), password: str 
         raise HTTPException(status_code=500, detail= str(e))
 
 # -----------  API for Displaying the Dashboard page ---------------#
-@router.get("/landingPage")
-async def landingPage(request: Request):
-    return templates.TemplateResponse("LandingPage.html", {"request": request})
-
 @router.get("/dashboard")
 async def dashboard(request: Request):
     return templates.TemplateResponse("Dashboard.html", {"request": request})
