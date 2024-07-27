@@ -13,12 +13,14 @@ from Schemas.schemas import list_deviceId, list_devices, list_serial, individual
 
 load_dotenv(dotenv_path='../variable.env')
 router = APIRouter()
-templates = Jinja2Templates(directory="../Frontend/Pages/")
+templates = Jinja2Templates(directory="./Frontend/templates")
 
+# -----------  API for Displaying the Login page initially ---------------#
 @router.get("/")
-async def login():
-    return FileResponse(os.path.join("Frontend", "Pages", "Login.html"))
+async def index(request: Request):
+    return templates.TemplateResponse("Login.html", {"request": request})
 
+# -----------  API for access token ---------------#
 @router.post("/token")
 async def login_for_access_token(
     form_data: OAuth2PasswordRequestForm= Depends(), response: Response = None): # type: ignore
@@ -50,8 +52,12 @@ async def login_for_access_token(
     )
     return response
 
+# -----------  API for Displaying the login page ---------------#
+@router.get("/login")
+async def loginpage(request: Request):
+    return templates.TemplateResponse("Login.html", {"request": request})
 
-# Login endpoint with CAPTCHA verification and JWT token generation
+# ---------- Login endpoint with CAPTCHA verification and JWT token generation ------#
 @router.post("/login") 
 async def login(response: Response, email: str = Form(...), password: str = Form(...), 
                 g_recaptcha_response: str = Form(...), remember_me: bool = Form(False)):
@@ -97,8 +103,13 @@ async def login(response: Response, email: str = Form(...), password: str = Form
     else:
         return JSONResponse(status_code=status.HTTP_401_UNAUTHORIZED, content= "Invalid Email or Password")
 
+# -----------  API for Displaying signup page ---------------#
+@router.get("/signup")
+async def signup(request: Request):
+    return templates.TemplateResponse("signup.html", {"request": request})
 
-@router.post("/signup/")
+# ---------Handles user registration by checking for existing email, creating a new user, hashing the password------#
+@router.post("/signup")
 async def add_user(new_user: UserinDB):
     try:
         user_exist = get_user(new_user.email)
@@ -111,13 +122,19 @@ async def add_user(new_user: UserinDB):
                 {"email": new_user.email},
                 {"$set": {"hashed_password": hashed_password}}
             )
-            #user.insert_one(dict(new_user))
             return JSONResponse(content = {"message": "User Created Successfully.", 
                     "new_user": individual_serial(get_user(new_user.email))})
     except Exception as e:
         raise HTTPException(status_code=500, detail= str(e))
 
-@router.post("/forget_password/")
+
+# -----------  API for Displaying and working of Forget Passowrd page ---------------#
+@router.get("/forgetPassword")
+async def forgetPassowrd(request: Request):
+    return templates.TemplateResponse("Forget_Password.html", {"request": request})
+
+# ------------ API for handling user passowrd updation ------------#
+@router.post("/forget_password")
 async def update_user(response: Response, email: str = Form(...), password: str = Form(...),):
     try:
         user_exist = get_user(email)
@@ -136,7 +153,22 @@ async def update_user(response: Response, email: str = Form(...), password: str 
     except Exception as e:
         raise HTTPException(status_code=500, detail= str(e))
 
-@router.post("/create_shipment/")
+# -----------  API for Displaying the Dashboard page ---------------#
+@router.get("/landingPage")
+async def landingPage(request: Request):
+    return templates.TemplateResponse("LandingPage.html", {"request": request})
+
+@router.get("/dashboard")
+async def dashboard(request: Request):
+    return templates.TemplateResponse("Dashboard.html", {"request": request})
+
+# -----------  API for Displaying Create Shipment page ---------------#
+@router.get("/create_shipment")
+async def new_shipment(request: Request):
+    return templates.TemplateResponse("newShipment.html", {"request": request})
+
+# ---------- API for storing the new shipment -----------#
+@router.post("/create_shipment")
 async def create_shipment(new_shipment: Shipment, current_user: dict = Depends(get_current_user)):
     try:
         print("Inside route")
@@ -147,7 +179,13 @@ async def create_shipment(new_shipment: Shipment, current_user: dict = Depends(g
         return JSONResponse(status_code=200, content={"success": "True"}) 
     except Exception as e:
         return JSONResponse(status_code=500, content={"success": False, "error": str(e)})
-    
+
+# -----------  API for Displaying My Shipments page ---------------#
+@router.get("/myShipments")
+async def myShipments(request: Request):
+    return templates.TemplateResponse("myShipment.html", {"request": request})
+
+# --------- API for fetching shipments of the login user ---------#
 @router.get("/my_Shipments")
 async def read_user_shipments(current_user: dict = Depends(get_current_user)):
     if current_user["role"] == "Admin":
@@ -156,16 +194,25 @@ async def read_user_shipments(current_user: dict = Depends(get_current_user)):
         shipment_details = list_shipments(shipment.find({"Created_by": current_user["email"]}))
     return shipment_details 
 
-@router.get("/Device_Details/")
+
+# -----------  API for Displaying the device data page ---------------#
+@router.get("/deviceData")
+async def deviceDetailsPage(request: Request):
+    return templates.TemplateResponse("deviceData.html", {"request": request})
+
+# ----------- API for fetching all the devices data available in db --------#
+@router.get("/Device_Details")
 async def all_device_details():
     all_devices_details = list_devices(device.find().sort({"Timestamp": -1}))
     return all_devices_details
 
+# ----------- API for fetching available device IDs --------#
 @router.get("/getDeviceIds", response_model=List[int])
 async def get_device_ids():
     device_ids = list_deviceId(device.find())
     return set(device_ids)
 
+# ----------- API for fetching selected device details ---------#
 @router.get("/Device_Details/{Device_id}")
 async def get_device_detail(Device_id:int):
     device_exist = fetch_device_details(Device_id)
@@ -178,6 +225,10 @@ async def get_device_detail(Device_id:int):
     else: 
         return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content= "Please enter correct Device ID")
 
+# ---------- API for displaying my Account Page ------------ #
+@router.get("/myAccount")
+async def myAccount(request: Request):
+    return templates.TemplateResponse("myAccount.html", {"request": request})
 
 
 

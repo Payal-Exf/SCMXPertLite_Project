@@ -1,8 +1,6 @@
-version: '3.11'
-
 services:
   frontend:
-    build: ./Frontend
+    build: ./Backend/Frontend
     image: payalmay0903/frontend:latest
     ports:
       - "8080:8080"
