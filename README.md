@@ -154,9 +154,9 @@ mongodb://<host_ip_address>:27017
     - After adding SSH host from the list of available hosts select the desired one.
 
 4. ***Open a Remote Window:***
-    - After connect is established you can now open folders and files o this remote server.
-    - Add the your project focal directly here by drag and drop from local to server.
-    - After folder is copied you need to install docker and docker compose
+    - After connection is established you can now open folders and files on this remote server.
+    - Add the your project folder directly here by drag and drop from local to server.
+    - After folder is copied you need to install docker and docker compose:
 - */Install Docker and Docker Compose/*
     
 ```bash
@@ -168,9 +168,9 @@ sudo usermod -a -G docker ec2-user
 sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 ```
-- Navigate to Project directory:
+- Navigate to Application directory:
 ```bash
-cd /SCMXPertLite_Project
+cd /<Your_Application_Name>
 ```
 
 - Build the docker images and run docker compose:
