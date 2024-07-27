@@ -4,7 +4,6 @@ import json
 import os
 from pymongo import MongoClient
 from dotenv import load_dotenv
-#from config.config_db import device
 
 # Load environment variables from the .env file
 load_dotenv(dotenv_path='../variable.env')
