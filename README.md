@@ -130,4 +130,56 @@ mongodb://<host_ip_address>:27017
 ```
 3. Connect and you will be able to see the available Databases and collections.
 
- 
+# Deployment on an AWS EC2 instance
+1. Login into your AWS account --> go to services and select EC2.
+2. Launch a instance - this will create a new instance, you need to create a key value pair
+    - this will download a pem or ppk file which you can use to connect using ssh
+    - after this your instace is up and running.
+
+    - **To connect to aws instance**
+        - Go to VS code install a new extension named *Remote - SSH*
+        - Click on this newly installed extension then connect using ssh
+        - Open the Command Palette:
+            - Press Ctrl+Shift+P to open the Command Palette.
+            - Type Remote-SSH: Connect to Host... and select it.
+            - In the input box that appears, type the SSH connection string for your AWS instance:
+        
+```bash
+    ssh <your Instance public IPV4 public DNS> -i <absolute path of your PEM file>
+```
+Configure SSH config file - Open the ssh config file and check the remote connection details
+3. Connect to the SSH Host:
+    - After adding SSH host from the list of available hosts select the desired one.
+4. Open a Remote Window:
+    - After connect is established you can now open folders and files o this remote server.
+    - Add the your project focal directly here by drag and drop from local to server.
+    - After folder is copied you need to install docker and docker compose
+- */Install Docker and Docker Compose/*
+    
+```bash
+sudo yum update -y
+sudo yum install -y docker
+sudo service docker start
+sudo systemctl enable docker
+sudo usermod -a -G docker ec2-user
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+```
+- Navigate to Project directory:
+```bash
+cd /SCMXPertLite_Project
+```
+
+- Build the docker images and run docker compose:
+```bash
+docker-compose build
+docker-compose up -d
+```
+- To check the logs
+```bash
+docker-compose logs
+```
+5. Access the application:
+    - Open your browser and navigate to *localhost:8000*.
+
+
