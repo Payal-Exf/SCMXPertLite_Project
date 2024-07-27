@@ -157,7 +157,7 @@ mongodb://<host_ip_address>:27017
     - After connection is established you can now open folders and files on this remote server.
     - Add the your project folder directly here by drag and drop from local to server.
     - After folder is copied you need to install docker and docker compose:
-- */Install Docker and Docker Compose/*
+- *Install Docker and Docker Compose*
     
 ```bash
 sudo yum update -y
