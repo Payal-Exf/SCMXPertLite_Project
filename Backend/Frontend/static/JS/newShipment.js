@@ -57,34 +57,15 @@ document.addEventListener('DOMContentLoaded', function(){
                 Shipment_descr: document.getElementById('Shipment_descr').value,
             };
     
-            const token = getCookie('access_token');
-    
-            function getCookie(name){
-                try{
-                    let CookieArr = document.cookie.split(";");
-                    for (let i = 0; i < CookieArr.length; i++) {
-                        let CookiePair = CookieArr[i].split("=");
-                        if (name === CookiePair[0].trim()) {                   
-                            return decodeURIComponent(CookiePair[1]);
-                        }
-                    }
-                    console.log('Cookie Not found: ', name);
-                    return null;
-        
-                }catch(error){
-                    console.error('Error retrieving Cookie:', error);
-                    return null;
-                }
-            }
     
             // Send form data to the backend
             fetch('/create_shipment', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify(formData),
+                credentials: 'include'
             })
             .then(response => response.json())
             .then(data => {
