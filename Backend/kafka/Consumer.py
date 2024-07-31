@@ -1,5 +1,6 @@
 from datetime import datetime, timezone
-from kafka import KafkaConsumer
+import time
+from kafka import KafkaConsumer, errors
 import json
 import os
 from pymongo import MongoClient
@@ -22,16 +23,26 @@ if not all([TOPIC_NAME, BOOTSTRAP_SERVERS]):
     raise ValueError("One or more environment variables are not set in the .env file")
 
 # Initialize Kafka Consumer
-def consume_data():
-    consumer = KafkaConsumer(
-        TOPIC_NAME,
-        bootstrap_servers=BOOTSTRAP_SERVERS,
-        auto_offset_reset='earliest',
-        enable_auto_commit=True,
-        group_id='my-group',
-        value_deserializer=lambda x: json.loads(x.decode('utf-8'))
-    )
+def create_consumer():
+    while True:
+            try:
 
+                consumer = KafkaConsumer(
+                    TOPIC_NAME,
+                    bootstrap_servers=BOOTSTRAP_SERVERS,
+                    auto_offset_reset='earliest',
+                    enable_auto_commit=True,
+                    group_id='my-group',
+                    value_deserializer=lambda x: json.loads(x.decode('utf-8'))
+                )
+                return consumer
+            except errors.NoBrokersAvailable:
+                print("No brokers available. Retrying in 5 seconds...")
+                time.sleep(5)
+
+# Reading data and storing it in mongodb
+def consume_data():  
+    consumer = create_consumer()
     print(f"Connected to Kafka, consuming from topic: {TOPIC_NAME}")
 
     for message in consumer:
