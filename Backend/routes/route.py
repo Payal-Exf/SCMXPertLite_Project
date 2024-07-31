@@ -8,7 +8,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.templating import Jinja2Templates
 import requests
 from models.models import Shipment, Token, User, UserinDB
-from config.auth import ACCESS_TOKEN_EXPIRE_MINUTES,ACCESS_TOKEN_EXPIRE_DAYS_REMEMBER_ME, create_access_token, get_current_admin, get_current_user, get_current_user_role, get_password_hash, user, shipment, device, get_user, authenticate_user, fetch_device_details
+from config.auth import ACCESS_TOKEN_EXPIRE_MINUTES,ACCESS_TOKEN_EXPIRE_DAYS_REMEMBER_ME, create_access_token, get_current_user, get_password_hash, user, shipment, device, get_user, authenticate_user, fetch_device_details
 from Schemas.schemas import list_deviceId, list_devices, list_serial, individual_serial, list_shipments, single_device, single_shipment
 
 load_dotenv(dotenv_path='../variable.env')
@@ -102,6 +102,13 @@ async def login(response: Response, email: str = Form(...), password: str = Form
         return response           
     else:
         return JSONResponse(status_code=status.HTTP_401_UNAUTHORIZED, content= "Invalid Email or Password")
+
+
+# ---------- API to fetch the details of the current user --------- #
+@router.get("/current_user")
+async def current_user(current_user: dict = Depends(get_current_user)):
+    return current_user
+
 
 # -----------  API for Displaying signup page ---------------#
 @router.get("/signup")

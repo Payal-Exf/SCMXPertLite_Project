@@ -2,7 +2,7 @@ from datetime import datetime, timedelta, timezone
 import os
 from dotenv import load_dotenv
 from typing import Annotated
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, Request, status
 import jwt
 from fastapi.security import OAuth2PasswordBearer
 from jwt.exceptions import InvalidTokenError 
@@ -13,15 +13,17 @@ from config.config_db import user, shipment, device
 #load environment variables from .env file
 load_dotenv(dotenv_path='../variable.env')
 
-# Password hasing using pyjwt 
-#secret key is getenerated using bash command openssl rand -hex 32
+# Password hashing using pyjwt 
+#secret key is generated using bash command "openssl rand -hex 32"
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = os.getenv("ALGORITHM")
 ACCESS_TOKEN_EXPIRE_MINUTES = os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")
 ACCESS_TOKEN_EXPIRE_DAYS_REMEMBER_ME = os.getenv("ACCESS_TOKEN_EXPIRE_DAYS_REMEMBER_ME")
 
+# Create a CryptContext object to handle password hashing and verification
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated = "auto")
 
+# Create an OAuth2PasswordBearer instance to extract bearer token from the request
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 # Function for hashing password
@@ -57,12 +59,15 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     return encoded_jwt
 
 # Funtion to retrieve and validate the current user from the JWT token
-async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
+async def get_current_user(request: Request):
     credentials_exception = HTTPException(
         status_code= status.HTTP_401_UNAUTHORIZED,
         detail = "Could not validate credentials",
         headers={"WWW-Autenticate": "Bearer"},
         )
+    token = request.cookies.get("access_token")
+    if not token:
+        raise credentials_exception
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms = [ALGORITHM]) 
         email: str = payload["sub"]
@@ -74,28 +79,10 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
         user = get_user(email= token_data.email)
         if user is None:
             raise credentials_exception
+        print({"email": token_data.email, "role": token_data.role,"fullname": token_data.fullname})
         return {"email": token_data.email, "role": token_data.role,"fullname": token_data.fullname, "id": str(user["_id"])}
     except InvalidTokenError:
         raise credentials_exception
-
-
-# Function to check if the current user has an admin role
-async def get_current_admin(current_user: dict = Depends(get_current_user)):
-    if current_user["role"] != "admin":
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="You do not have permission to access this resource",
-        )
-    return current_user    
-
-# Function to check if the current user has a user role
-async def get_current_user_role(current_user: dict = Depends(get_current_user)):
-    if current_user["role"] != "user":
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="You do not have permission to access this resource",
-        )
-    return current_user 
 
 # Function to fetch device details using given device id
 def fetch_device_details(device_id: int):
