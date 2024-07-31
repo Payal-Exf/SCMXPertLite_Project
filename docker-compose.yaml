@@ -34,6 +34,7 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       ALLOW_PLAINTEXT_LISTENER: "yes"
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_HEAP_OPTS: "-Xmx512m -Xms512m"
     depends_on:
       - zookeeper
     networks:
